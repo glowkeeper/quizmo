@@ -1,0 +1,108 @@
+import { useState, useEffect, type ReactNode } from 'react'
+
+type TimerType = ({countdownFrom, granularity, onWantsTime, questionNumber, startTimerToggle, wantsTimeToggle, clearToggle}: TimerProps) => ReactNode 
+
+interface TimerProps {
+  countdownFrom: number
+  granularity: number
+  onWantsTime: Function
+  questionNumber: number
+  startTimerToggle: boolean
+  wantsTimeToggle: boolean
+  clearToggle: boolean
+}
+
+export const Countdowner: TimerType = ({countdownFrom, granularity, onWantsTime, questionNumber, startTimerToggle, wantsTimeToggle, clearToggle}) => {
+
+  const [timer, setTimer] = useState<number>(0)
+  const [time, setTime] = useState<number>(-1)
+  const [intervalTime, setIntervalTime] = useState<number>(100)
+  const [question, setQuestion] = useState<number>(0)
+  const [startToggle, setStartToggle] = useState<boolean>(false)
+  const [sendTimeToggle, setSendTimeToggle] = useState<boolean>(false)
+  const [resetToggle, setResetToggle] = useState<boolean>(false)
+
+  useEffect(() => {
+
+    setTime(countdownFrom)
+    setIntervalTime(granularity)
+
+  }, [])
+
+  useEffect(() => {
+
+    if (clearToggle !== resetToggle) {   
+      reset()
+    }
+
+  }, [clearToggle])
+
+  useEffect(() => {
+
+    setQuestion(questionNumber)
+
+  }, [questionNumber])
+
+  useEffect(() => {
+
+    //console.log("wants time", wantsTimeToggle, sendTimeToggle)
+
+    if ( wantsTimeToggle !== sendTimeToggle )
+    {
+      //console.log("wants time here?", wantsTimeToggle, sendTimeToggle, timer)
+      clearInterval(timer)
+      const amountCountdown = countdownFrom - time
+      onWantsTime(amountCountdown, question)
+      setSendTimeToggle(wantsTimeToggle)
+    }
+
+  }, [wantsTimeToggle])
+
+  useEffect(() => {
+
+    //console.log("wants time", wantsTimeToggle, sendTimeToggle)
+
+    if (time.toFixed(2) === "0.00") {
+      onWantsTime(countdownFrom, question)
+    }
+
+  }, [time])
+
+  useEffect(() => {
+
+    if ( startTimerToggle !== startToggle )
+    {
+
+      reset()
+      setStartToggle(startTimerToggle)
+      const timer = setInterval(() => {
+
+        setTime((time) => {
+          if (time.toFixed(2) === "0.00") {
+            //console.log('this timer', timer)
+            clearInterval(timer)
+            return 0
+          } else return time - (intervalTime / 1000)
+        })
+      }, intervalTime)
+
+      //console.log("timer", timer)
+      setTimer(timer)
+    }    
+
+    return () => clearInterval(timer)
+
+  }, [startTimerToggle])
+
+  const reset = () => {
+    setTime(countdownFrom)
+    setIntervalTime(granularity)
+    setResetToggle(clearToggle)
+  }
+
+  return (
+    <>
+      {time.toFixed(2)}
+    </>
+  )
+}

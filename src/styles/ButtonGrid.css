@@ -1,0 +1,39 @@
+.grid-button {
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+.grid-button:hover {
+  background-color: #6691bd;
+}
+
+.grid-button:active {
+  box-shadow:
+    inset 0 -3em 3em rgba(88, 80, 201, 0.3),
+      0 0 0 2px white,
+      0.3em 0.3em 1em rgba(44, 85, 218, 0.6);
+  transform: translateY(1px);
+}
+
+.grid-text {
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
+}
+
+.grid-text-hidden {
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
