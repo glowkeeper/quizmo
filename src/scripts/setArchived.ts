@@ -1,3 +1,5 @@
+// run: ./node_modules/.bin/payload run src/scripts/setArchiveds.ts
+
 import { getPayload } from 'payload'
 
 import config from '@payload-config'
