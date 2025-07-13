@@ -38,6 +38,13 @@ export const Questions: CollectionConfig = {
       required: true,
     },
   ],
+  // admin: {
+  //   meta: {
+  //     title: 'Quizmo Questions',
+  //     description:
+  //       'Quizmo is rapid-fire questions. You have just 10 seconds to decide on each answer, and the Quicker you are, the higher you can score',
+  //   },
+  // },
   endpoints: [
     {
       path: '/live',
@@ -58,7 +65,7 @@ export const Questions: CollectionConfig = {
           .where(eq(questions.live, true))
           .limit(numRecords)
 
-        console.log('got questions', results)
+        //console.log('got questions', results)
 
         return Response.json({
           message: results,

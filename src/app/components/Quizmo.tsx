@@ -131,7 +131,7 @@ export const Quizmo = () => {
   }
 
   return (
-    <>
+    <div className="w-screen h-screen">
       {isPlaying ? (
         <>
           <p>{`Total: ${total.toFixed(2)}`}</p>
@@ -153,33 +153,49 @@ export const Quizmo = () => {
           <AnswerGrid questionNumber={questionNumber} onSetAnswer={onSetAnswer} />
         </>
       ) : (
-        // <AnswerGrid />
-
-        <>
-          <p>Quizmo is rapid-fire 25 questions. The answers are anything from 1 to 25.</p>
-          <p>
-            You input your answer by selecting a button on a 5x5 grid, which runs from left to right
-            and top to bottom. The top left button represents 1. The bottom right button represents
-            25.
-          </p>
-          <p>
-            You have just 10 seconds to decide on each answer, and the Quicker you are, the higher
-            you can score.
-          </p>
-          <p>
-            <b>Think fast and react quickly!</b>
-          </p>
-          <p>
-            By{' '}
-            <a href="https://huckle.studio" target="_blank">
-              Steve Huckle
-            </a>
-          </p>
-          <button onClick={handlePlay} disabled={isFetching}>
-            Play
-          </button>
-        </>
+        <div className="h-screen flex flex-col items-center justify-center gap-4">
+          <>
+            <p className="text-center">
+              Quizmo is rapid-fire 25 questions. The answers are anything from 1 to 25.
+            </p>
+          </>
+          <>
+            <p className="text-center">
+              You input your answer by selecting a button on a 5x5 grid, which runs from left to
+              right and top to bottom. The top left button represents 1. The bottom right button
+              represents 25.
+            </p>
+          </>
+          <>
+            <p className="text-center">
+              You have just 10 seconds to decide on each answer, and the quicker you are, the higher
+              you can score.
+            </p>
+          </>
+          <>
+            <p className="text-center">
+              <b>Think fast and react quickly!</b>
+            </p>
+          </>
+          <>
+            <button
+              className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl"
+              onClick={handlePlay}
+              disabled={isFetching}
+            >
+              Play
+            </button>
+          </>
+          <>
+            <p className="text-center">
+              By &nbsp;
+              <a href="https://huckle.studio" target="_blank">
+                Steve Huckle
+              </a>
+            </p>
+          </>
+        </div>
       )}
-    </>
+    </div>
   )
 }

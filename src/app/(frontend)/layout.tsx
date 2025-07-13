@@ -1,9 +1,10 @@
 import React from 'react'
-import './styles.css'
+import '@/styles/global.css'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  title: 'Quizmo Questions',
+  description:
+    'Quizmo is rapid-fire questions. You have just 10 seconds to decide on each answer, and the Quicker you are, the higher you can score',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

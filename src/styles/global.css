@@ -1,6 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 
 @import "./variables.css";
-@import "./typeset.css";
 @import "./App.css";
+@import "./typeset.css";
 @import "./ButtonGrid.css";
+
+@plugin "daisyui" {
+  themes: nord --default, abyss --prefersdark, cupcake, dracula;
+  root: ":root";
+  include: ;
+  exclude: ;
+  prefix: ;
+  logs: false;
+}

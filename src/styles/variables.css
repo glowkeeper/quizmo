@@ -1,16 +1,136 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --background: hsl(50, 83%, 74%);
+  --foreground: hsl(222.2, 84%, 4.9%);
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --card: hsl(240, 5%, 96%);
+  --card-foreground: hsl(222.2, 84%, 4.9%);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222.2, 84%, 4.9%);
 
-  --animation-slow-spin: slow-spin infinite 20s linear
+  --primary: hsl(92, 33%, 56%);
+  --primary-foreground: hsl(222.2, 47.4%, 11.2%);
+
+  --secondary: hsl(28, 88%, 65%);
+  --secondary-foreground: hsl(222.2, 47.4%, 11.2%);
+
+  --muted: hsl(160, 22%, 46%);
+  --muted-foreground: hsl(222.2, 47.4%, 11.2%);
+
+  --accent: hsl(357, 46%, 52%);
+  --accent-foreground: hsl(180, 0%, 100%);
+
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(180, 0%, 100%);
+
+  --border: hsl(28, 88%, 65%);
+  --input: hsl(357, 71%, 47%);
+  --ring: hsl(222.2, 84%, 4.9%);
+
+  --radius: hsl(0.2rem);
+
+  --success: hsl(135, 61%, 44%);
+  --success-foreground: hsl(180, 0%, 100%);
+
+  --warning: hsl(34, 80%, 46%);
+  --warning-foreground: hsl(222.2, 84%, 4.9%);
+
+  --error: hsl(0, 84.2%, 60.2%);
+  --error-foreground: hsl(180, 0%, 100%);
+}
+
+[data-theme='dark'] {
+  --background: hsl(39, 9%, 32%);
+  --foreground: hsl(180, 0%, 100%);
+
+  --card: hsl(47, 27%, 17%);
+  --card-foreground: hsl(180, 0%, 100%);
+
+  --popover: hsl(47, 27%, 17%);
+  --popover-foreground: hsl(180, 0%, 100%);
+
+  --primary: hsl(80, 100%, 1%);
+  --primary-foreground: hsl(180, 0%, 100%);
+
+  --secondary: hsl(39, 9%, 32%);
+  --secondary-foreground: hsl(180, 0%, 100%);
+
+  --muted: hsl(216, 17%, 56%);
+  --muted-foreground: hsl(222.2, 47.4%, 11.2%);
+
+  --accent: hsl(207, 49%, 65%);
+  --accent-foreground: hsl(222.2, 84%, 4.9%);
+
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(180, 0%, 100%);
+
+  --border: hsl(39, 9%, 32%);
+  --input: hsl(207, 67%, 48%);
+  --ring: hsl(222.2, 84%, 4.9%);
+
+  --radius: hsl(0.2rem);
+
+  --success: hsl(135, 61%, 44%);
+  --success-foreground: hsl(180, 0%, 100%);
+
+  --warning: hsl(34, 80%, 46%);
+  --warning-foreground: hsl(222.2, 84%, 4.9%);
+
+  --error: hsl(0, 84.2%, 60.2%);
+  --error-foreground: hsl(180, 0%, 100%);
+}
+
+/* @layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+  }
+}
+
+html {
+  opacity: 0;
+}
+
+html[data-theme='dark'],
+html[data-theme='light'] {
+  opacity: initial;
+} */
+
+@theme {
+
+  --font-sans: InterVariable, sans-serif;
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-button: var(--accent);
+  --color-button-border: var(--border);
+  --color-button-hover: var(--input);
+  --color-button-foreground: var(--accent-foreground);
+  
+  --animate-blinkText: blinktext 3s linear;
+  --animate-fadeIn: fadeIn 1.5s forwards;
+
+  @keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+  }
+
+  @keyframes blinkText {
+    100%{
+        color: rgba(255, 0, 0, 0); 
+    }
+    20%,80%{
+        color: rgba(255, 0, 0, 1); 
+    }
+    0% {
+        color: rgba(255, 0, 0, 0);
+    }
+  }
 }

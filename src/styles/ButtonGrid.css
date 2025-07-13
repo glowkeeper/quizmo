@@ -1,4 +1,4 @@
-.grid-button {
+/* .grid-button {
   background-color: #007bff;
   color: white;
   border-radius: 4px;
@@ -21,7 +21,7 @@
       0 0 0 2px white,
       0.3em 0.3em 1em rgba(44, 85, 218, 0.6);
   transform: translateY(1px);
-}
+} */
 
 .grid-text {
   opacity: 0;
