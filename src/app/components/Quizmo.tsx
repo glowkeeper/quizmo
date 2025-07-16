@@ -81,7 +81,7 @@ export const Quizmo = () => {
     <div className="quizmo">
       {isPlaying ? (
         <>
-          <p>{`Total: ${total.toFixed(2)}`}</p>
+          <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
           {hasAsked ? (
             <Answerer
               questions={allQuestions}
