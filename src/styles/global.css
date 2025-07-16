@@ -2,8 +2,10 @@
 @import "tailwindcss";
 
 @import "./variables.css";
-@import "./App.css";
 @import "./typeset.css";
+@import "./App.css";
+@import "./Footer.css";
+@import "./Header.css";
 @import "./ButtonGrid.css";
 
 @plugin "daisyui" {

@@ -1,10 +1,12 @@
+'use client'
+
 import { useState, useEffect, type ReactNode } from 'react'
 
 type AnswerGridType = ({ questionNumber, onSetAnswer }: AnswerGridProps) => ReactNode
 
 interface AnswerGridProps {
   questionNumber: number
-  onSetAnswer: Function
+  onSetAnswer: (value: number, question: number) => void
 }
 
 interface Grid {
@@ -53,11 +55,11 @@ export const AnswerGrid: AnswerGridType = ({ questionNumber, onSetAnswer }) => {
       {data.map((button) => (
         <button
           key={button.value}
-          className={button.className}
+          className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl"
           onClick={() => onNumberSelect(button.value)}
         >
           {answers[button.value] ? (
-            <div className="grid-text">
+            <div className="animate-fadeIn">
               {button.value < 10 ? <>0{button.value}</> : <>{button.value}</>}
             </div>
           ) : (

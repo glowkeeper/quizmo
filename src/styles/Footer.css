@@ -1,0 +1,12 @@
+.footer { 
+  @apply flex flex-row items-center justify-center;
+  position: absolute;
+  bottom: 0;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  height: var(--footer-height);
+}
+
+a {
+  @apply text-[var(--primary-foreground)] active:text-[var(--primary-foreground)]/80 hover:text-[var(--primary-foreground)]/70 visited:text-[var(--primary-foreground)]/90
+}

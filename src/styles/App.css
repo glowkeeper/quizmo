@@ -1,14 +1,19 @@
 body {
   font-family: var(--font-sans);
   line-height: 1.5;
+
   color-scheme: light dark;
   color: var(--foreground);
   background-color: var(--background);
 
   margin: 0;
   padding: 0;
-  display: flex;
-  place-items: center;
+
   min-width: 100vw;
   min-height: 100vh;
+}
+
+.quizmo {
+  @apply flex flex-col items-center justify-center;  
+  height: calc(100vh - (var(--header-height) + var(--footer-height)));
 }

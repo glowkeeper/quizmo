@@ -1,0 +1,13 @@
+.header {
+  @apply flex flex-row items-center justify-center;
+  position: relative;
+  top: 0;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  height: var(--header-height);
+}
+
+.logo {
+  height: 4rem;
+  width: 4rem;
+}

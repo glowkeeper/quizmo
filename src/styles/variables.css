@@ -17,14 +17,14 @@
   --muted: hsl(160, 22%, 46%);
   --muted-foreground: hsl(222.2, 47.4%, 11.2%);
 
-  --accent: hsl(357, 46%, 52%);
-  --accent-foreground: hsl(180, 0%, 100%);
+  --accent: hsl(49, 71%, 47%);
+  --accent-foreground: hsl(222.2, 84%, 4.9%);
 
   --destructive: hsl(0, 84.2%, 60.2%);
   --destructive-foreground: hsl(180, 0%, 100%);
 
   --border: hsl(28, 88%, 65%);
-  --input: hsl(357, 71%, 47%);
+  --input: hsl(46, 87%, 49%);
   --ring: hsl(222.2, 84%, 4.9%);
 
   --radius: hsl(0.2rem);
@@ -37,6 +37,9 @@
 
   --error: hsl(0, 84.2%, 60.2%);
   --error-foreground: hsl(180, 0%, 100%);
+
+  --header-height: 5rem;
+  --footer-height: 4rem;
 }
 
 [data-theme='dark'] {
@@ -78,6 +81,9 @@
 
   --error: hsl(0, 84.2%, 60.2%);
   --error-foreground: hsl(180, 0%, 100%);
+
+  --header-height: 5rem;
+  --footer-height: 4rem;
 }
 
 /* @layer base {
@@ -113,20 +119,36 @@ html[data-theme='light'] {
   --color-button-hover: var(--input);
   --color-button-foreground: var(--accent-foreground);
   
-  --animate-blinkText: blinktext 3s linear;
   --animate-fadeIn: fadeIn 1.5s forwards;
+  --animate-fadeInOut: fadeInOut 4s forwards;
+  --animate-blinkText: blinktext 3s linear;
 
   @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
     to {
         opacity: 1;
+    }
+}
+
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    25%,75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
     }
   }
 
   @keyframes blinkText {
-    100%{
+    100% {
         color: rgba(255, 0, 0, 0); 
     }
-    20%,80%{
+    20%,80% {
         color: rgba(255, 0, 0, 1); 
     }
     0% {

@@ -23,11 +23,6 @@
   transform: translateY(1px);
 } */
 
-.grid-text {
-  opacity: 0;
-  animation: fadeIn 1.5s forwards;
-}
-
 .grid-text-hidden {
   opacity: 0;
 }

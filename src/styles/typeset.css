@@ -1,18 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;700;900&display=swap');
 
 p {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: var(--primary-foreground);
+  margin: 1rem 0 1rem 0;
 }
 
 h1 {
-  font-size: var(--text-2xl--line-height);
+  font-size: 1.7rem;
   font-weight: var(--font-weight-semibold);
   color: var(--color-gray-950);
 }
 
 h2 {
-  font-size: var(--text-xl);
+  font-size: 1.5rem;
   font-weight: var(--font-weight-semibold);
   color: var(--color-gray-950);
 }

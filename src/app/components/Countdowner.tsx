@@ -1,20 +1,37 @@
+'use client'
+
 import { useState, useEffect, type ReactNode } from 'react'
 
-type TimerType = ({countdownFrom, granularity, onWantsTime, questionNumber, startTimerToggle, wantsTimeToggle, clearToggle}: TimerProps) => ReactNode 
+type TimerType = ({
+  questionNumber,
+  countdownFrom,
+  granularity,
+  onWantsTime,
+  startTimerToggle,
+  wantsTimeToggle,
+  clearToggle,
+}: TimerProps) => ReactNode
 
 interface TimerProps {
+  questionNumber: number
   countdownFrom: number
   granularity: number
-  onWantsTime: Function
-  questionNumber: number
+  onWantsTime: (amountCountdown: number, question: number) => void
   startTimerToggle: boolean
   wantsTimeToggle: boolean
   clearToggle: boolean
 }
 
-export const Countdowner: TimerType = ({countdownFrom, granularity, onWantsTime, questionNumber, startTimerToggle, wantsTimeToggle, clearToggle}) => {
-
-  const [timer, setTimer] = useState<number>(0)
+export const Countdowner: TimerType = ({
+  questionNumber,
+  countdownFrom,
+  granularity,
+  onWantsTime,
+  startTimerToggle,
+  wantsTimeToggle,
+  clearToggle,
+}) => {
+  const [timer, setTimer] = useState<NodeJS.Timeout>()
   const [time, setTime] = useState<number>(-1)
   const [intervalTime, setIntervalTime] = useState<number>(100)
   const [question, setQuestion] = useState<number>(0)
@@ -23,75 +40,60 @@ export const Countdowner: TimerType = ({countdownFrom, granularity, onWantsTime,
   const [resetToggle, setResetToggle] = useState<boolean>(false)
 
   useEffect(() => {
-
     setTime(countdownFrom)
     setIntervalTime(granularity)
-
   }, [])
 
   useEffect(() => {
-
-    if (clearToggle !== resetToggle) {   
+    if (clearToggle !== resetToggle) {
       reset()
     }
-
   }, [clearToggle])
 
   useEffect(() => {
-
     setQuestion(questionNumber)
-
   }, [questionNumber])
 
   useEffect(() => {
+    //console.log('wants time', wantsTimeToggle, sendTimeToggle)
 
-    //console.log("wants time", wantsTimeToggle, sendTimeToggle)
-
-    if ( wantsTimeToggle !== sendTimeToggle )
-    {
-      //console.log("wants time here?", wantsTimeToggle, sendTimeToggle, timer)
+    if (wantsTimeToggle !== sendTimeToggle) {
+      //console.log('wants time here?', wantsTimeToggle, sendTimeToggle, timer)
       clearInterval(timer)
       const amountCountdown = countdownFrom - time
       onWantsTime(amountCountdown, question)
       setSendTimeToggle(wantsTimeToggle)
     }
-
   }, [wantsTimeToggle])
 
   useEffect(() => {
-
     //console.log("wants time", wantsTimeToggle, sendTimeToggle)
 
-    if (time.toFixed(2) === "0.00") {
+    if (time.toFixed(2) === '0.00') {
       onWantsTime(countdownFrom, question)
     }
-
   }, [time])
 
   useEffect(() => {
-
-    if ( startTimerToggle !== startToggle )
-    {
-
+    //console.log('in here set timer?')
+    if (startTimerToggle !== startToggle) {
       reset()
       setStartToggle(startTimerToggle)
       const timer = setInterval(() => {
-
         setTime((time) => {
-          if (time.toFixed(2) === "0.00") {
+          if (time.toFixed(2) === '0.00') {
             //console.log('this timer', timer)
             clearInterval(timer)
             return 0
-          } else return time - (intervalTime / 1000)
+          } else return time - intervalTime / 1000
         })
       }, intervalTime)
 
-      //console.log("timer", timer)
+      //console.log('timer', timer)
       setTimer(timer)
-    }    
+    }
 
     return () => clearInterval(timer)
-
   }, [startTimerToggle])
 
   const reset = () => {
@@ -100,9 +102,5 @@ export const Countdowner: TimerType = ({countdownFrom, granularity, onWantsTime,
     setResetToggle(clearToggle)
   }
 
-  return (
-    <>
-      {time.toFixed(2)}
-    </>
-  )
+  return <>{time.toFixed(2)}</>
 }
