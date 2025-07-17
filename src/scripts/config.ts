@@ -1,6 +1,6 @@
 export const numLiveQuestions = 25
 export const maxFetchTries = 5
-export const maxAnswer = 25
+export const maxAnswer = 5
 export const maxQuestions = 150
 export const maxTime = 10
 

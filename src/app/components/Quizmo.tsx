@@ -10,6 +10,7 @@ import { maxAnswer, maxTime } from '../../scripts/config'
 
 import { Answerer } from './Answerer'
 import { Questioner } from './Questioner'
+import { Summary } from './Summary'
 
 export const Quizmo = () => {
   const [isFetching, setIsFetching] = useState<boolean>(true)
@@ -105,24 +106,21 @@ export const Quizmo = () => {
         <>
           {hasFinished ? (
             <>
-              <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
+              <Summary total={total} answers={allAnswers} />
             </>
           ) : (
             <>
               <p className="text-center">
-                Quizmo is rapid-fire 25 questions. The answers are anything from 1 to 25.
+                <b>Quizmo</b>: 25 Questions. 10 Seconds Each. Think Fast, Score Big!
               </p>
-              <p className="text-center">
-                You input your answer by selecting a button on a 5x5 grid, which runs from left to
-                right and top to bottom. The top left button represents 1. The bottom right button
-                represents 25.
-              </p>
-              <p className="text-center">
-                You have just 10 seconds to decide on each answer, and the quicker you are, the
-                higher you can score.
-              </p>
-              <p className="text-center">
-                <b>Think fast and react quickly!</b>
+              <p>
+                <b>
+                  {new Date().toLocaleDateString('en-UK', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </b>
               </p>
               <button
                 className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"

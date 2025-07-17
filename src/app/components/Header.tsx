@@ -15,7 +15,7 @@ export const Header = () => {
           className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl"
           onClick={() => (document.getElementById('my_modal_1') as HTMLDialogElement).showModal()}
         >
-          Help
+          <p className="font-bold">?</p>
         </button>
         <dialog id="my_modal_1" className="modal">
           <div className="modal-box">
