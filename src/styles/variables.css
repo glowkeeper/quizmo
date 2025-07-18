@@ -119,7 +119,8 @@ html[data-theme='light'] {
   --color-button-hover: var(--input);
   --color-button-foreground: var(--accent-foreground);
   
-  --animate-fadeIn: fadeIn 1.5s forwards;
+  --animate-fadeInAnswer: fadeIn 1.5s forwards;
+  --animate-fadeInShowAnswer: fadeIn 1.5s forwards;
   --animate-fadeInOut: fadeInOut 4s forwards;
   --animate-blinkText: blinktext 3s linear;
 

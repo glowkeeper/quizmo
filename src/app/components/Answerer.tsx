@@ -59,25 +59,32 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
     setStartToggle(!startToggle)
   }, [questions, questionNumber])
 
+  const onGetTime = (question: number) => {
+    //console.log(`Time for ${question} was ${timeTaken}`)
+
+    if (currentAnswer.questionNumber === question) {
+      setWantsTimeToggle(!wantsTimeToggle)
+    }
+  }
+
   const onSetTime = (timeTaken: number, question: number) => {
     //console.log(`Time for ${question} was ${timeTaken}`)
 
     if (currentAnswer.questionNumber === question) {
       const thisAnswer: Answers = { ...currentAnswer, time: timeTaken }
-      //console.log('setting time', thisAnswer)
-      onHasAnswered(thisAnswer)
+      setCurrentAnswer(thisAnswer)
     }
   }
 
   const onSetAnswer = (answer: number, question: number) => {
-    console.log(`answer for ${question} is ${answer}`, currentAnswer.questionNumber)
+    //console.log(`answer for ${question} is ${answer}`, currentAnswer.questionNumber)
 
     if (currentAnswer.questionNumber === question) {
       const thisAnswer: Answers = { ...currentAnswer, answer: answer }
       //console.log('setting given answer', thisAnswer)
 
       setCurrentAnswer(thisAnswer)
-      setWantsTimeToggle(!wantsTimeToggle)
+      onHasAnswered(thisAnswer)
     }
   }
 
@@ -93,7 +100,12 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
         clearToggle={clearToggle}
       />
 
-      <AnswerGrid questionNumber={question} onSetAnswer={onSetAnswer} />
+      <AnswerGrid
+        questions={questions}
+        questionNumber={question}
+        onSetAnswer={onSetAnswer}
+        onGetTime={onGetTime}
+      />
     </>
   )
 }
