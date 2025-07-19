@@ -22,6 +22,10 @@ export const Quizmo = () => {
   const [questionNumber, setQuestionNumber] = useState<number>(1)
 
   const [allAnswers, setAllAnswers] = useState<Answers[]>([])
+
+  const [newScore, setNewScore] = useState<number>(0)
+  const [hasNewScore, setHasNewScore] = useState<boolean>(false)
+
   const [total, setTotal] = useState<number>(0)
 
   useEffect(() => {
@@ -68,18 +72,13 @@ export const Quizmo = () => {
       setAllAnswers(answers)
 
       if (answer.answer == answer.correctAnswer) {
-        const newTotal = total + (maxTime - answer.time)
+        const newScore = maxTime - answer.time
+        const newTotal = total + newScore
         //console.log('new total hoorah', newTotal)
+        setNewScore(newScore)
+        setHasNewScore(true)
         setTotal(newTotal)
       }
-    }
-
-    if (questionNumber >= maxAnswer) {
-      setIsPlaying(false)
-      setHasFinished(true)
-    } else {
-      setHasAsked(false)
-      setQuestionNumber(questionNumber + 1)
     }
   }
 
@@ -89,11 +88,31 @@ export const Quizmo = () => {
         <>
           <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
           {hasAsked ? (
-            <Answerer
-              questions={allQuestions}
-              questionNumber={questionNumber}
-              onHasAnswered={onHasAnswered}
-            />
+            <>
+              {hasNewScore ? (
+                <p
+                  className="animate-fadeInOut"
+                  onAnimationEnd={() => {
+                    setHasNewScore(false)
+                    if (questionNumber >= maxAnswer) {
+                      setIsPlaying(false)
+                      setHasFinished(true)
+                    } else {
+                      setHasAsked(false)
+                      setQuestionNumber(questionNumber + 1)
+                    }
+                  }}
+                >
+                  <b>+{newScore.toFixed(2)}</b>
+                </p>
+              ) : (
+                <Answerer
+                  questions={allQuestions}
+                  questionNumber={questionNumber}
+                  onHasAnswered={onHasAnswered}
+                />
+              )}
+            </>
           ) : (
             <Questioner
               questions={allQuestions}

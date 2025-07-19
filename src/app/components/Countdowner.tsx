@@ -6,7 +6,7 @@ type TimerType = ({
   questionNumber,
   countdownFrom,
   granularity,
-  onWantsTime,
+  onSetTime,
   startTimerToggle,
   wantsTimeToggle,
   clearToggle,
@@ -16,7 +16,7 @@ interface TimerProps {
   questionNumber: number
   countdownFrom: number
   granularity: number
-  onWantsTime: (amountCountdown: number, question: number) => void
+  onSetTime: (amountCountdown: number, question: number) => void
   startTimerToggle: boolean
   wantsTimeToggle: boolean
   clearToggle: boolean
@@ -26,7 +26,7 @@ export const Countdowner: TimerType = ({
   questionNumber,
   countdownFrom,
   granularity,
-  onWantsTime,
+  onSetTime,
   startTimerToggle,
   wantsTimeToggle,
   clearToggle,
@@ -61,7 +61,7 @@ export const Countdowner: TimerType = ({
       //console.log('wants time here?', wantsTimeToggle, sendTimeToggle, timer)
       clearInterval(timer)
       const amountCountdown = countdownFrom - time
-      onWantsTime(amountCountdown, question)
+      onSetTime(amountCountdown, question)
       setSendTimeToggle(wantsTimeToggle)
     }
   }, [wantsTimeToggle])
@@ -70,7 +70,7 @@ export const Countdowner: TimerType = ({
     //console.log("wants time", wantsTimeToggle, sendTimeToggle)
 
     if (time.toFixed(2) === '0.00') {
-      onWantsTime(countdownFrom, question)
+      onSetTime(countdownFrom, question)
     }
   }, [time])
 

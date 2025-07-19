@@ -24,7 +24,7 @@ export const Summary: SummaryType = ({ total, answers }) => {
     let totalTime = 0
     let correctTime = 0
     answers.forEach((answer) => {
-      console.log('answer', answer)
+      //console.log('answer', answer)
       if (answer.answer == answer.correctAnswer) {
         numCorrect += 1
         correctTime += answer.time
@@ -45,8 +45,10 @@ export const Summary: SummaryType = ({ total, answers }) => {
       <p>
         Correct: {numCorrect} / {maxAnswer}
       </p>
-      <p>Average Correct Answer Time: {avgCorrectTime.toFixed(2)}</p>
-      <p>Average Answer Time: {avgTime.toFixed(2)}</p>
+      <p>
+        Average Correct Answer Time: {isNaN(avgCorrectTime) ? '---' : avgCorrectTime.toFixed(2)}
+      </p>
+      <p>Average Answer Time: {avgTime === 10 ? '---' : avgTime.toFixed(2)}</p>
     </>
   )
 }

@@ -8,6 +8,7 @@ import { validateUrlMinimal } from 'node_modules/@payloadcms/richtext-lexical/di
 type AnswerGridType = ({
   questions,
   questionNumber,
+  timeElapsed,
   onSetAnswer,
   onGetTime,
 }: AnswerGridProps) => ReactNode
@@ -15,6 +16,7 @@ type AnswerGridType = ({
 interface AnswerGridProps {
   questions: Questions[]
   questionNumber: number
+  timeElapsed: boolean
   onSetAnswer: (value: number, question: number) => void
   onGetTime: (question: number) => void
 }
@@ -37,6 +39,7 @@ const gridDefs: Grid = {
 export const AnswerGrid: AnswerGridType = ({
   questions,
   questionNumber,
+  timeElapsed,
   onSetAnswer,
   onGetTime,
 }) => {
@@ -59,6 +62,13 @@ export const AnswerGrid: AnswerGridType = ({
     setCorrectAnswer(questions[questionNumber - 1].answer)
     setQuestion(questionNumber)
   }, [questions, questionNumber])
+
+  useEffect(() => {
+    if (timeElapsed) {
+      setAnswer(0)
+      setHasAnswered(true)
+    }
+  }, [timeElapsed])
 
   const onNumberSelect = (value: number) => {
     //console.log('all questions', allQuestions, value)
@@ -91,7 +101,7 @@ export const AnswerGrid: AnswerGridType = ({
                 <div
                   className="animate-fadeInShowAnswer"
                   onAnimationEnd={() => {
-                    console.log('shown correct end', button.value)
+                    //console.log('shown correct end', button.value)
                     onShownCorrect()
                   }}
                 >
@@ -100,7 +110,9 @@ export const AnswerGrid: AnswerGridType = ({
               ) : (
                 <>
                   {button.value == answer ? (
-                    <div>{button.value < 10 ? <>0{button.value}</> : <>{button.value}</>}</div>
+                    <div className="animate-fadeInShowAnswer">
+                      {button.value < 10 ? <>0{button.value}</> : <>{button.value}</>}
+                    </div>
                   ) : (
                     <div className="grid-text-hidden">00</div>
                   )}
