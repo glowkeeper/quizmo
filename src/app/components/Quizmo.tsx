@@ -71,14 +71,15 @@ export const Quizmo = () => {
       answers.push(answer)
       setAllAnswers(answers)
 
+      let newScore = 0
       if (answer.answer == answer.correctAnswer) {
-        const newScore = maxTime - answer.time
+        newScore = maxTime - answer.time
         const newTotal = total + newScore
-        //console.log('new total hoorah', newTotal)
-        setNewScore(newScore)
-        setHasNewScore(true)
         setTotal(newTotal)
       }
+
+      setHasNewScore(true)
+      setNewScore(newScore)
     }
   }
 

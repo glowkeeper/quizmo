@@ -19,6 +19,9 @@ export const Summary: SummaryType = ({ total, answers }) => {
   const [avgTime, setAvgTime] = useState<number>(0)
   const [avgCorrectTime, setAvgCorrectTime] = useState<number>(0)
 
+  const [showAnswers, setShowAnswers] = useState<boolean>(false)
+  const [questionNumber, setQuestionNumber] = useState<number>(1)
+
   useEffect(() => {
     let numCorrect = 0
     let totalTime = 0
@@ -40,15 +43,74 @@ export const Summary: SummaryType = ({ total, answers }) => {
 
   return (
     <>
-      <h2>Summary</h2>
-      <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
-      <p>
-        Correct: {numCorrect} / {maxAnswer}
-      </p>
-      <p>
-        Average Correct Answer Time: {isNaN(avgCorrectTime) ? '---' : avgCorrectTime.toFixed(2)}
-      </p>
-      <p>Average Answer Time: {avgTime === 10 ? '---' : avgTime.toFixed(2)}</p>
+      <p className="font-bold">{`Total: ${totalScore.toFixed(2)}`}</p>
+      {showAnswers ? (
+        <>
+          <h2>Question {questionNumber}</h2>
+          <p>{allAnswers[questionNumber - 1].question}</p>
+          <p>Your Answer: {allAnswers[questionNumber - 1].answer}</p>
+          <p>Correct Answer: {allAnswers[questionNumber - 1].correctAnswer}</p>
+          {questionNumber >= maxAnswer ? (
+            <button
+              className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
+              onClick={() => setQuestionNumber(questionNumber - 1)}
+            >
+              Previous
+            </button>
+          ) : (
+            <>
+              {questionNumber <= 1 ? (
+                <button
+                  className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
+                  onClick={() => setQuestionNumber(questionNumber + 1)}
+                >
+                  Next
+                </button>
+              ) : (
+                <div className="flex flex-row items-center justify-center gap-4">
+                  <button
+                    className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
+                    onClick={() => setQuestionNumber(questionNumber + 1)}
+                  >
+                    Next
+                  </button>
+                  <button
+                    className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
+                    onClick={() => setQuestionNumber(questionNumber - 1)}
+                  >
+                    Prev
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <p>
+            <b>
+              {new Date().toLocaleDateString('en-UK', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </b>
+          </p>
+          <p>
+            Correct: {numCorrect} / {maxAnswer}
+          </p>
+          <p>
+            Average Correct Answer Time: {isNaN(avgCorrectTime) ? '---' : avgCorrectTime.toFixed(2)}
+          </p>
+          <p>Average Answer Time: {avgTime === 10 ? '---' : avgTime.toFixed(2)}</p>
+          <button
+            className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
+            onClick={() => setShowAnswers(true)}
+          >
+            Show Answers
+          </button>
+        </>
+      )}
     </>
   )
 }
