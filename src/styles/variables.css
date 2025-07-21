@@ -119,17 +119,22 @@ html[data-theme='light'] {
   --color-button-hover: var(--input);
   --color-button-foreground: var(--accent-foreground);
   
+  --animate-fadeInFast: fadeIn 2s forwards;
+  --animate-fadeInSlow: fadeIn 6s forwards;
+  --animate-fadeIn: fadeIn 4s forwards;
   --animate-fadeInAnswer: fadeIn 1.5s forwards;
   --animate-fadeInShowAnswer: fadeIn 2s forwards;
+  --animate-fadeInOutFast: fadeInOut 2s forwards;
   --animate-fadeInOut: fadeInOut 4s forwards;
-  --animate-blinkText: blinktext 3s linear;
+  --animate-fadeInOutSlow: fadeInOut 6s forwards;
+  --animate-blinkText: blinkText 6s linear;
 
   @keyframes fadeIn {
     from {
       opacity: 0;
     }
     to {
-        opacity: 1;
+      opacity: 1;
     }
 }
 
@@ -147,13 +152,34 @@ html[data-theme='light'] {
 
   @keyframes blinkText {
     100% {
-        color: rgba(255, 0, 0, 0); 
+        color: var(--background); 
     }
-    20%,80% {
-        color: rgba(255, 0, 0, 1); 
+    90% {
+        color: var(--primary-foreground); 
     }
-    0% {
-        color: rgba(255, 0, 0, 0);
+    80% {
+        color: var(--background); 
+    }
+    70% {
+        color: var(--primary-foreground);
+    }
+    60% {
+        color: var(--background); 
+    }
+    50% {
+        color: var(--primary-foreground); 
+    }
+    40% {
+        color: var(--background); 
+    }
+    30% {
+        color: var(--primary-foreground);
+    }
+    20% {
+        color: var(--background); 
+    }
+    10% {
+        color: var(--primary-foreground); 
     }
   }
 }

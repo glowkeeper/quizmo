@@ -26,6 +26,8 @@ export const Quizmo = () => {
   const [newScore, setNewScore] = useState<number>(0)
   const [hasNewScore, setHasNewScore] = useState<boolean>(false)
 
+  const [hasShownOld, setHasShownOld] = useState<boolean>(false)
+  const [oldTotal, setOldTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
 
   useEffect(() => {
@@ -75,9 +77,11 @@ export const Quizmo = () => {
       if (answer.answer == answer.correctAnswer) {
         newScore = maxTime - answer.time
         const newTotal = total + newScore
+        setOldTotal(total)
         setTotal(newTotal)
       }
 
+      setHasShownOld(false)
       setHasNewScore(true)
       setNewScore(newScore)
     }
@@ -87,39 +91,58 @@ export const Quizmo = () => {
     <div className="quizmo">
       {isPlaying ? (
         <>
-          <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
           {hasAsked ? (
             <>
               {hasNewScore ? (
-                <p
-                  className="animate-fadeInOut"
-                  onAnimationEnd={() => {
-                    setHasNewScore(false)
-                    if (questionNumber >= maxAnswer) {
-                      setIsPlaying(false)
-                      setHasFinished(true)
-                    } else {
-                      setHasAsked(false)
-                      setQuestionNumber(questionNumber + 1)
-                    }
-                  }}
-                >
-                  <b>+{newScore.toFixed(2)}</b>
-                </p>
+                <>
+                  {hasShownOld ? (
+                    <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
+                  ) : (
+                    <p
+                      className="font-bold animate-fadeInOut"
+                      onAnimationEnd={() => {
+                        setHasShownOld(true)
+                      }}
+                    >
+                      {`Old Total: ${oldTotal.toFixed(2)}`}
+                    </p>
+                  )}
+                  <p
+                    className="animate-blinkText"
+                    onAnimationEnd={() => {
+                      setHasNewScore(false)
+                      if (questionNumber >= maxAnswer) {
+                        setIsPlaying(false)
+                        setHasFinished(true)
+                      } else {
+                        setHasAsked(false)
+                        setQuestionNumber(questionNumber + 1)
+                      }
+                    }}
+                  >
+                    <b>+{newScore.toFixed(2)}</b>
+                  </p>
+                </>
               ) : (
-                <Answerer
-                  questions={allQuestions}
-                  questionNumber={questionNumber}
-                  onHasAnswered={onHasAnswered}
-                />
+                <>
+                  <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
+                  <Answerer
+                    questions={allQuestions}
+                    questionNumber={questionNumber}
+                    onHasAnswered={onHasAnswered}
+                  />
+                </>
               )}
             </>
           ) : (
-            <Questioner
-              questions={allQuestions}
-              questionNumber={questionNumber}
-              onHasAsked={onHasAsked}
-            />
+            <>
+              <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
+              <Questioner
+                questions={allQuestions}
+                questionNumber={questionNumber}
+                onHasAsked={onHasAsked}
+              />
+            </>
           )}
         </>
       ) : (
