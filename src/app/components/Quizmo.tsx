@@ -96,32 +96,42 @@ export const Quizmo = () => {
               {hasNewScore ? (
                 <>
                   {hasShownOld ? (
-                    <p className="font-bold">{`Total: ${total.toFixed(2)}`}</p>
+                    <>
+                      <p
+                        className="font-bold animate-fadeInVeryFast"
+                        onAnimationEnd={() => {
+                          setOldTotal(total)
+                          setHasNewScore(false)
+                          if (questionNumber >= maxAnswer) {
+                            setIsPlaying(false)
+                            setHasFinished(true)
+                          } else {
+                            setHasAsked(false)
+                            setQuestionNumber(questionNumber + 1)
+                          }
+                        }}
+                      >
+                        {`Total: ${total.toFixed(2)}`}
+                      </p>
+                      <p>
+                        <b>+{newScore.toFixed(2)}</b>
+                      </p>
+                    </>
                   ) : (
-                    <p
-                      className="font-bold animate-fadeInOut"
-                      onAnimationEnd={() => {
-                        setHasShownOld(true)
-                      }}
-                    >
-                      {`Old Total: ${oldTotal.toFixed(2)}`}
-                    </p>
+                    <>
+                      <p
+                        className="font-bold animate-fadeInOutFast"
+                        onAnimationEnd={() => {
+                          setHasShownOld(true)
+                        }}
+                      >
+                        {`Old Total: ${oldTotal.toFixed(2)}`}
+                      </p>
+                      <p className="animate-blinkText">
+                        <b>+{newScore.toFixed(2)}</b>
+                      </p>
+                    </>
                   )}
-                  <p
-                    className="animate-blinkText"
-                    onAnimationEnd={() => {
-                      setHasNewScore(false)
-                      if (questionNumber >= maxAnswer) {
-                        setIsPlaying(false)
-                        setHasFinished(true)
-                      } else {
-                        setHasAsked(false)
-                        setQuestionNumber(questionNumber + 1)
-                      }
-                    }}
-                  >
-                    <b>+{newScore.toFixed(2)}</b>
-                  </p>
                 </>
               ) : (
                 <>

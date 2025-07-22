@@ -33,7 +33,7 @@ interface GridData {
 
 const gridDefs: Grid = {
   size: 25,
-  css: 'grid grid-cols-5 gap-2',
+  css: 'grid grid-cols-5 gap-2 m-4',
 }
 
 export const AnswerGrid: AnswerGridType = ({

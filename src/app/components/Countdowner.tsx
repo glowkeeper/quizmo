@@ -102,5 +102,9 @@ export const Countdowner: TimerType = ({
     setResetToggle(clearToggle)
   }
 
-  return <>{time.toFixed(2)}</>
+  return (
+    <>
+      <p>{time.toFixed(2)}</p>
+    </>
+  )
 }
