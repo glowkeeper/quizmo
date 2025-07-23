@@ -4,7 +4,7 @@ import React, { useState, useEffect, type ReactNode } from 'react'
 
 import type { Questions } from '../../scripts/setQuestions'
 
-import { maxTime } from '../../scripts/config'
+import { maxTime } from '../../config'
 
 import { AnswerGrid } from './AnswerGrid'
 import { Countdowner } from './Countdowner'

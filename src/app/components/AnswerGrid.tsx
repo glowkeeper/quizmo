@@ -3,7 +3,8 @@
 import { useState, useEffect, type ReactNode } from 'react'
 
 import type { Questions } from '../../scripts/setQuestions'
-import { validateUrlMinimal } from 'node_modules/@payloadcms/richtext-lexical/dist/lexical/utils/url'
+
+import { maxAnswer } from '../../config'
 
 type AnswerGridType = ({
   questions,
@@ -31,11 +32,6 @@ interface GridData {
   className: string
 }
 
-const gridDefs: Grid = {
-  size: 25,
-  css: 'grid grid-cols-5 gap-2 m-4',
-}
-
 export const AnswerGrid: AnswerGridType = ({
   questions,
   questionNumber,
@@ -50,7 +46,7 @@ export const AnswerGrid: AnswerGridType = ({
   const [hasAnswered, setHasAnswered] = useState<boolean>(false)
 
   useEffect(() => {
-    const buttonData: GridData[] = Array.from({ length: gridDefs.size }, (_, index) => ({
+    const buttonData: GridData[] = Array.from({ length: maxAnswer }, (_, index) => ({
       value: index + 1,
       className: 'btn btn-primary',
     }))
@@ -83,7 +79,7 @@ export const AnswerGrid: AnswerGridType = ({
   }
 
   return (
-    <div className={gridDefs.css}>
+    <div className="grid grid-cols-5 gap-2 m-4">
       {grid.map((button, index) => {
         //console.log('coorect', correctAnswer)
         let buttonClass =

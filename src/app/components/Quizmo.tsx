@@ -6,7 +6,7 @@ import type { Questions } from '../../scripts/setQuestions'
 
 import type { Answers } from './Answerer'
 
-import { maxAnswer, maxTime } from '../../scripts/config'
+import { maxAnswer, maxTime } from '../../config'
 
 import { Answerer } from './Answerer'
 import { Questioner } from './Questioner'
@@ -41,6 +41,20 @@ export const Quizmo = () => {
         //console.log('fetched', json)
         if (json?.message?.length) {
           questions = json?.message.map((choice: Questions) => choice)
+          const storedGameNumber = localStorage.getItem('game')
+          const thisGameNumber = questions[0]?.game.toString()
+          if (storedGameNumber !== thisGameNumber) {
+            localStorage.clear()
+            localStorage.setItem('game', questions[0]?.game.toString())
+          } else {
+            const total = localStorage.getItem('total')
+            const answers = localStorage.getItem('answers') as string
+            if (answers !== '') {
+              setAllAnswers(JSON.parse(answers))
+              setTotal(Number(total))
+              setHasFinished(true)
+            }
+          }
         }
       })
 
@@ -109,6 +123,8 @@ export const Quizmo = () => {
                             setHasAsked(false)
                             setQuestionNumber(questionNumber + 1)
                           }
+                          localStorage.setItem('answers', JSON.stringify(allAnswers))
+                          localStorage.setItem('total', JSON.stringify(total))
                         }}
                       >
                         {`Total: ${total.toFixed(2)}`}

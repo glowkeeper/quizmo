@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     questions: Question;
+    games: Game;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +80,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     questions: QuestionsSelect<false> | QuestionsSelect<true>;
+    games: GamesSelect<false> | GamesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -162,6 +164,17 @@ export interface Question {
   category: string;
   archived: boolean;
   live: boolean;
+  game?: (number | null) | Game;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "games".
+ */
+export interface Game {
+  id: number;
+  date: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -183,6 +196,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'questions';
         value: number | Question;
+      } | null)
+    | ({
+        relationTo: 'games';
+        value: number | Game;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -269,6 +286,16 @@ export interface QuestionsSelect<T extends boolean = true> {
   category?: T;
   archived?: T;
   live?: T;
+  game?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "games_select".
+ */
+export interface GamesSelect<T extends boolean = true> {
+  date?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -37,14 +37,15 @@ export const Questions: CollectionConfig = {
       defaultValue: false,
       required: true,
     },
+    {
+      name: 'game',
+      type: 'relationship',
+      label: 'game',
+      relationTo: 'games',
+      required: false,
+      hasMany: false,
+    },
   ],
-  // admin: {
-  //   meta: {
-  //     title: 'Quizmo Questions',
-  //     description:
-  //       'Quizmo is rapid-fire questions. You have just 10 seconds to decide on each answer, and the Quicker you are, the higher you can score',
-  //   },
-  // },
   endpoints: [
     {
       path: '/live',
@@ -60,6 +61,7 @@ export const Questions: CollectionConfig = {
           .select({
             question: questions.question,
             answer: questions.answer,
+            game: questions.game,
           })
           .from(questions)
           .where(eq(questions.live, true))

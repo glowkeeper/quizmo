@@ -82,6 +82,9 @@ export const questions = sqliteTable(
     category: text('category').notNull(),
     archived: integer('archived', { mode: 'boolean' }).notNull().default(false),
     live: integer('live', { mode: 'boolean' }).notNull().default(false),
+    game: integer('game_id').references(() => games.id, {
+      onDelete: 'set null',
+    }),
     updatedAt: text('updated_at')
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
@@ -90,8 +93,29 @@ export const questions = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
+    questions_game_idx: index('questions_game_idx').on(columns.game),
     questions_updated_at_idx: index('questions_updated_at_idx').on(columns.updatedAt),
     questions_created_at_idx: index('questions_created_at_idx').on(columns.createdAt),
+  }),
+)
+
+export const games = sqliteTable(
+  'games',
+  {
+    id: integer('id').primaryKey(),
+    date: text('date')
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+    updatedAt: text('updated_at')
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+    createdAt: text('created_at')
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+  },
+  (columns) => ({
+    games_updated_at_idx: index('games_updated_at_idx').on(columns.updatedAt),
+    games_created_at_idx: index('games_created_at_idx').on(columns.createdAt),
   }),
 )
 
@@ -130,6 +154,7 @@ export const payload_locked_documents_rels = sqliteTable(
     usersID: integer('users_id'),
     mediaID: integer('media_id'),
     questionsID: integer('questions_id'),
+    gamesID: integer('games_id'),
   },
   (columns) => ({
     order: index('payload_locked_documents_rels_order_idx').on(columns.order),
@@ -144,6 +169,9 @@ export const payload_locked_documents_rels = sqliteTable(
     payload_locked_documents_rels_questions_id_idx: index(
       'payload_locked_documents_rels_questions_id_idx',
     ).on(columns.questionsID),
+    payload_locked_documents_rels_games_id_idx: index(
+      'payload_locked_documents_rels_games_id_idx',
+    ).on(columns.gamesID),
     parentFk: foreignKey({
       columns: [columns['parent']],
       foreignColumns: [payload_locked_documents.id],
@@ -163,6 +191,11 @@ export const payload_locked_documents_rels = sqliteTable(
       columns: [columns['questionsID']],
       foreignColumns: [questions.id],
       name: 'payload_locked_documents_rels_questions_fk',
+    }).onDelete('cascade'),
+    gamesIdFk: foreignKey({
+      columns: [columns['gamesID']],
+      foreignColumns: [games.id],
+      name: 'payload_locked_documents_rels_games_fk',
     }).onDelete('cascade'),
   }),
 )
@@ -245,7 +278,14 @@ export const payload_migrations = sqliteTable(
 
 export const relations_users = relations(users, () => ({}))
 export const relations_media = relations(media, () => ({}))
-export const relations_questions = relations(questions, () => ({}))
+export const relations_questions = relations(questions, ({ one }) => ({
+  game: one(games, {
+    fields: [questions.game],
+    references: [games.id],
+    relationName: 'game',
+  }),
+}))
+export const relations_games = relations(games, () => ({}))
 export const relations_payload_locked_documents_rels = relations(
   payload_locked_documents_rels,
   ({ one }) => ({
@@ -268,6 +308,11 @@ export const relations_payload_locked_documents_rels = relations(
       fields: [payload_locked_documents_rels.questionsID],
       references: [questions.id],
       relationName: 'questions',
+    }),
+    gamesID: one(games, {
+      fields: [payload_locked_documents_rels.gamesID],
+      references: [games.id],
+      relationName: 'games',
     }),
   }),
 )
@@ -305,6 +350,7 @@ type DatabaseSchema = {
   users: typeof users
   media: typeof media
   questions: typeof questions
+  games: typeof games
   payload_locked_documents: typeof payload_locked_documents
   payload_locked_documents_rels: typeof payload_locked_documents_rels
   payload_preferences: typeof payload_preferences
@@ -313,6 +359,7 @@ type DatabaseSchema = {
   relations_users: typeof relations_users
   relations_media: typeof relations_media
   relations_questions: typeof relations_questions
+  relations_games: typeof relations_games
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels
   relations_payload_locked_documents: typeof relations_payload_locked_documents
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels

@@ -7,7 +7,7 @@ import {
   aIPrompt,
   aIPromptInvalidJSONPt1,
   aIPromptInvalidJSONPt2,
-} from './config'
+} from '../config'
 
 type ParseQuestions = (unParsed: string) => DataReturned
 type ParseGeneratedQuestions = (questions: Choices[]) => DataReturned
@@ -16,6 +16,7 @@ type GenerateQuestions = () => Promise<DataReturned>
 export interface Questions {
   question: string
   answer: number
+  game: number
 }
 
 export interface DataReturned {

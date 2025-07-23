@@ -3,7 +3,7 @@
 import React, { useState, useEffect, type ReactNode } from 'react'
 
 import type { Answers } from './Answerer'
-import { maxAnswer, maxTime } from '../../scripts/config'
+import { maxAnswer, maxTime } from '../../config'
 
 type SummaryType = ({ total, answers }: SummaryProps) => ReactNode
 
@@ -24,7 +24,7 @@ export const Summary: SummaryType = ({ total, answers }) => {
   const [questionNumber, setQuestionNumber] = useState<number>(1)
 
   useEffect(() => {
-    let unAnswered = 0
+    let unAnswered = maxAnswer - answers.length
     let numCorrect = 0
     let totalTime = 0
     let correctTime = 0
