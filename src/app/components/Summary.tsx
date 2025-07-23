@@ -14,6 +14,7 @@ interface SummaryProps {
 
 export const Summary: SummaryType = ({ total, answers }) => {
   const [totalScore, setTotalScore] = useState<number>(0)
+  const [numAnswers, setNumAnswers] = useState<number>(0)
   const [allAnswers, setAllAnswers] = useState<Answers[]>([])
   const [numCorrect, setNumCorrect] = useState<number>(0)
   const [numUnanswered, setNumUnanswered] = useState<number>(0)
@@ -24,7 +25,8 @@ export const Summary: SummaryType = ({ total, answers }) => {
   const [questionNumber, setQuestionNumber] = useState<number>(1)
 
   useEffect(() => {
-    let unAnswered = maxAnswer - answers.length
+    let numAnswers = answers.length
+    let unAnswered = maxAnswer - numAnswers
     let numCorrect = 0
     let totalTime = 0
     let correctTime = 0
@@ -41,6 +43,7 @@ export const Summary: SummaryType = ({ total, answers }) => {
         totalTime += answer.time
       }
     })
+    setNumAnswers(numAnswers)
     setAllAnswers(answers)
     setTotalScore(total)
     setNumCorrect(numCorrect)
@@ -72,7 +75,7 @@ export const Summary: SummaryType = ({ total, answers }) => {
               <>0</>
             )}
           </p>
-          {questionNumber >= maxAnswer ? (
+          {questionNumber >= numAnswers ? (
             <div className="flex flex-row items-center justify-center gap-4">
               <button
                 className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
