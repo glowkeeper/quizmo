@@ -67,10 +67,20 @@ export const Questions: CollectionConfig = {
           .where(eq(questions.live, true))
           .limit(numRecords)
 
-        //console.log('got questions', results)
+        const encoded = results.map((result) => {
+          const game = result.game?.toString() as string
+          const newResult = {
+            question: Buffer.from(result.question).toString('base64'),
+            answer: Buffer.from(result.answer).toString('base64'),
+            game: Buffer.from(game).toString('base64'),
+          }
+          return newResult
+        })
+
+        //console.log('got encoded questions', encoded)
 
         return Response.json({
-          message: results,
+          message: encoded,
         })
       },
     },

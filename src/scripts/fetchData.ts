@@ -36,6 +36,7 @@ export const fetchData: FetchWithReturn = async ({ url, fetchOptions }) => {
   await fetch(url, fetchOptions)
     .then(async (response: Response) => {
       if (!response.ok) {
+        //console.log('response', response)
         throw new Error('Network response was not ok')
       }
       const json = await response.json()

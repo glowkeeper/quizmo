@@ -15,8 +15,8 @@ type GenerateQuestions = () => Promise<DataReturned>
 
 export interface Questions {
   question: string
-  answer: number
-  game: number
+  answer: string
+  game: string
 }
 
 export interface DataReturned {
@@ -38,7 +38,7 @@ export const parseQuestions: ParseQuestions = (unParsed) => {
       //console.log('this question', question)
 
       const thisAnswer = Number(theseQuestions[question].answer)
-      if (thisAnswer >= 1 && thisAnswer <= maxAnswer) {
+      if (Number(thisAnswer) >= 1 && Number(thisAnswer) <= maxAnswer) {
         questions.parsed.push(theseQuestions[question])
       }
     })
@@ -50,8 +50,8 @@ export const parseQuestions: ParseQuestions = (unParsed) => {
 }
 
 const parseGeneratedQuestions: ParseGeneratedQuestions = (questions) => {
-  //console.log('Got Questions', questions)
-  const theseQuestions = questions[0].message.content
+  console.log('Got Questions', questions)
+  const theseQuestions = questions[0].message?.content
   const parsedQuestions = parseQuestions(theseQuestions)
   //console.log('Parsed Questions', parsedQuestions)
   return parsedQuestions
@@ -83,7 +83,7 @@ export const generateQuestions: GenerateQuestions = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-4-maverick:free',
+        model: 'deepseek/deepseek-chat-v3-0324:free',
         messages: [
           {
             role: 'user',

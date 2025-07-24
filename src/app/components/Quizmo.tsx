@@ -40,15 +40,27 @@ export const Quizmo = () => {
         const json = await response.json()
         //console.log('fetched', json)
         if (json?.message?.length) {
-          questions = json?.message.map((choice: Questions) => choice)
-          const storedGameNumber = localStorage.getItem('game')
-          const thisGameNumber = questions[0]?.game.toString()
-          if (storedGameNumber !== thisGameNumber) {
+          questions = json?.message.map((question: Questions) => {
+            const newQuestion = {
+              question: Buffer.from(question.question, 'base64').toString('ascii'),
+              answer: Buffer.from(question.answer, 'base64').toString('ascii'),
+              game: Buffer.from(question.game, 'base64').toString('ascii'),
+            }
+            return newQuestion
+          })
+
+          //console.log('decoded', questions)
+          const storedGameEncoded = localStorage.getItem('game') as string
+          const storedGame = Buffer.from(storedGameEncoded, 'base64').toString('ascii')
+          const thisGame = questions[0].game
+          if (storedGame !== thisGame) {
             localStorage.clear()
-            localStorage.setItem('game', questions[0]?.game.toString())
+            localStorage.setItem('game', Buffer.from(questions[0]?.game).toString('base64'))
           } else {
-            const total = localStorage.getItem('total')
-            const answers = localStorage.getItem('answers') as string
+            const totalEncoded = localStorage.getItem('total') as string
+            const total = Buffer.from(totalEncoded, 'base64').toString('ascii')
+            const answersEncoded = localStorage.getItem('answers') as string
+            const answers = Buffer.from(answersEncoded, 'base64').toString('ascii')
             if (answers !== '') {
               setAllAnswers(JSON.parse(answers))
               setTotal(Number(total))
@@ -123,8 +135,14 @@ export const Quizmo = () => {
                             setHasAsked(false)
                             setQuestionNumber(questionNumber + 1)
                           }
-                          localStorage.setItem('answers', JSON.stringify(allAnswers))
-                          localStorage.setItem('total', JSON.stringify(total))
+                          localStorage.setItem(
+                            'answers',
+                            Buffer.from(JSON.stringify(allAnswers)).toString('base64'),
+                          )
+                          localStorage.setItem(
+                            'total',
+                            Buffer.from(JSON.stringify(total)).toString('base64'),
+                          )
                         }}
                       >
                         {`Total: ${total.toFixed(2)}`}
