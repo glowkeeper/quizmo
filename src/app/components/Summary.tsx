@@ -164,8 +164,14 @@ export const Summary: SummaryType = ({ total, answers }) => {
             Average Correct Score:{' '}
             {isNaN(avgCorrectTime) ? '---' : (totalScore / numCorrect).toFixed(2)}
           </p>
-          <p>Average Answer Time: {avgTime === 10 ? '---' : avgTime.toFixed(2) + 's'}</p>
-          <p>Average Score: {avgTime === 10 ? '---' : (totalScore / maxAnswer).toFixed(2)}</p>
+          <p>
+            Average Answer Time:{' '}
+            {isNaN(avgCorrectTime) || avgTime === maxTime ? '---' : avgTime.toFixed(2) + 's'}
+          </p>
+          <p>
+            Average Score:{' '}
+            {isNaN(avgCorrectTime) || avgTime === 10 ? '---' : (totalScore / maxAnswer).toFixed(2)}
+          </p>
           <button
             className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
             onClick={() => setShowAnswers(true)}

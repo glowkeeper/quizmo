@@ -30,48 +30,59 @@ export const Quizmo = () => {
   const [oldTotal, setOldTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
 
+  const setQuestions = (questions: Questions[]) => {
+    //console.log('decoded', questions)
+    if (questions.length) {
+      const storedGameEncoded = localStorage.getItem('game') as string
+      if (storedGameEncoded) {
+        //console.log('stored game', storedGameEncoded)
+        const storedGame = Buffer.from(storedGameEncoded, 'base64').toString('ascii')
+        const thisGame = questions[0].game
+        if (storedGame !== thisGame) {
+          localStorage.clear()
+        } else {
+          const totalEncoded = localStorage.getItem('total') as string
+          const total = totalEncoded ? Buffer.from(totalEncoded, 'base64').toString('ascii') : 0
+          const answersEncoded = localStorage.getItem('answers') as string
+          const answers = answersEncoded
+            ? Buffer.from(answersEncoded, 'base64').toString('ascii')
+            : ''
+          answers !== '' ? setAllAnswers(JSON.parse(answers)) : []
+          setTotal(Number(total))
+          setHasFinished(true)
+        }
+      }
+      localStorage.setItem('game', Buffer.from(questions[0].game).toString('base64'))
+    }
+
+    //console.log('questions', questions)
+    setAllQuestions(questions)
+  }
+
   useEffect(() => {
     const getQuestions = async () => {
       let questions: Questions[] = []
-      await fetch('http://localhost:3000/api/questions/live').then(async (response: Response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        const json = await response.json()
-        //console.log('fetched', json)
-        if (json?.message?.length) {
-          questions = json?.message.map((question: Questions) => {
-            const newQuestion = {
-              question: Buffer.from(question.question, 'base64').toString('ascii'),
-              answer: Buffer.from(question.answer, 'base64').toString('ascii'),
-              game: Buffer.from(question.game, 'base64').toString('ascii'),
-            }
-            return newQuestion
-          })
-
-          //console.log('decoded', questions)
-          const storedGameEncoded = localStorage.getItem('game') as string
-          const storedGame = Buffer.from(storedGameEncoded, 'base64').toString('ascii')
-          const thisGame = questions[0].game
-          if (storedGame !== thisGame) {
-            localStorage.clear()
-            localStorage.setItem('game', Buffer.from(questions[0]?.game).toString('base64'))
-          } else {
-            const totalEncoded = localStorage.getItem('total') as string
-            const total = Buffer.from(totalEncoded, 'base64').toString('ascii')
-            const answersEncoded = localStorage.getItem('answers') as string
-            const answers = Buffer.from(answersEncoded, 'base64').toString('ascii')
-            if (answers !== '') {
-              setAllAnswers(JSON.parse(answers))
-              setTotal(Number(total))
-              setHasFinished(true)
-            }
+      await fetch('http://localhost:3000/api/questions/live')
+        .then(async (response: Response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok')
           }
-        }
-      })
+          const json = await response.json()
+          //console.log('fetched', json)
+          if (json?.message?.length) {
+            questions = json?.message.map((question: Questions) => {
+              const newQuestion = {
+                question: Buffer.from(question.question, 'base64').toString('ascii'),
+                answer: Buffer.from(question.answer, 'base64').toString('ascii'),
+                game: Buffer.from(question.game, 'base64').toString('ascii'),
+              }
+              return newQuestion
+            })
+          }
+        })
+        .catch((error) => console.error('Error fetching data:', error))
 
-      //console.log('questions', questions)
-      setAllQuestions(questions)
+      setQuestions(questions)
       setIsFetching(false)
     }
 
