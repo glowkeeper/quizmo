@@ -30,11 +30,11 @@ export const Quizmo = () => {
   const [oldTotal, setOldTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
   const [game, setGame] = useState<string>('')
+  const [gameDate, setGameDate] = useState<string>('')
 
-  const setQuestions = (questions: Questions[]) => {
+  const setQuestions = (game: string, gameDate: string, questions: Questions[]) => {
     //console.log('decoded', questions)
     if (questions.length) {
-      const game = questions[0].game
       const storedGame = localStorage.getItem(game)
       if (storedGame) {
         const answersEncoded: string = Buffer.from(storedGame, 'base64').toString('ascii')
@@ -47,28 +47,33 @@ export const Quizmo = () => {
       } else {
         localStorage.setItem(game, Buffer.from(questions[0].game).toString('base64'))
       }
-      setGame(game)
     }
     //console.log('questions', questions)
+
+    setGame(game)
+    setGameDate(gameDate)
     setAllQuestions(questions)
   }
 
   useEffect(() => {
     const getQuestions = async () => {
       let questions: Questions[] = []
+      let game = ''
+      let gameDate = ''
       await fetch('http://localhost:3000/api/questions/live')
         .then(async (response: Response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok')
           }
           const json = await response.json()
-          //console.log('fetched', json)
-          if (json?.message?.length) {
-            questions = json?.message.map((question: Questions) => {
+          console.log('fetched', json)
+          if (json?.message) {
+            game = json.message.game
+            gameDate = json.message.date
+            questions = json.message.questions.map((question: Questions) => {
               const encodedQuestion = {
                 question: Buffer.from(question.question, 'base64').toString('ascii'),
                 answer: Buffer.from(question.answer, 'base64').toString('ascii'),
-                game: question.game,
               }
               return encodedQuestion
             })
@@ -76,7 +81,7 @@ export const Quizmo = () => {
         })
         .catch((error) => console.error('Error fetching data:', error))
 
-      setQuestions(questions)
+      setQuestions(game, gameDate, questions)
       setIsFetching(false)
     }
 
@@ -132,6 +137,7 @@ export const Quizmo = () => {
                         className="font-bold animate-fadeInVeryFast"
                         onAnimationEnd={() => {
                           const answers = {
+                            date: gameDate,
                             total: total,
                             answers: allAnswers,
                           }

@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { eq } from '@payloadcms/db-sqlite/drizzle'
 
-import { questions } from '../payload-generated-schema'
+import { questions, games } from '../payload-generated-schema'
 
 const numRecords = 25
 
@@ -56,24 +56,35 @@ export const Questions: CollectionConfig = {
             question: questions.question,
             answer: questions.answer,
             game: questions.game,
+            date: games.date,
           })
           .from(questions)
           .where(eq(questions.live, true))
+          .rightJoin(games, eq(games.id, questions.game))
           .limit(numRecords)
 
-        const encoded = results.map((result) => {
+        let game = ''
+        let date = ''
+        const encodedQuestions = results.map((result) => {
+          game = result.game?.toString() as string
+          date = result.date
           const newResult = {
-            question: Buffer.from(result.question).toString('base64'),
-            answer: Buffer.from(result.answer).toString('base64'),
-            game: result.game?.toString() as string,
+            question: Buffer.from(result.question as string).toString('base64'),
+            answer: Buffer.from(result.answer as string).toString('base64'),
           }
           return newResult
         })
 
+        const newQuestions = {
+          game: game,
+          date: date,
+          questions: encodedQuestions,
+        }
+
         //console.log('got encoded questions', encoded)
 
         return Response.json({
-          message: encoded,
+          message: newQuestions,
         })
       },
     },
