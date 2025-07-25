@@ -18,7 +18,7 @@ interface AnswerGridProps {
   questions: Questions[]
   questionNumber: number
   timeElapsed: boolean
-  onSetAnswer: (value: number, question: number) => void
+  onSetAnswer: (value: string, question: number) => void
   onGetTime: (question: number) => void
 }
 
@@ -41,8 +41,8 @@ export const AnswerGrid: AnswerGridType = ({
 }) => {
   const [grid, setGrid] = useState<GridData[]>([])
   const [question, setQuestion] = useState<number>(0)
-  const [correctAnswer, setCorrectAnswer] = useState<number>(0)
-  const [answer, setAnswer] = useState<number>(0)
+  const [correctAnswer, setCorrectAnswer] = useState<string>('')
+  const [answer, setAnswer] = useState<string>('')
   const [hasAnswered, setHasAnswered] = useState<boolean>(false)
 
   useEffect(() => {
@@ -61,12 +61,12 @@ export const AnswerGrid: AnswerGridType = ({
 
   useEffect(() => {
     if (timeElapsed) {
-      setAnswer(0)
+      setAnswer('')
       setHasAnswered(true)
     }
   }, [timeElapsed])
 
-  const onNumberSelect = (value: number) => {
+  const onNumberSelect = (value: string) => {
     //console.log('all questions', allQuestions, value)
     setAnswer(value)
     setHasAnswered(true)
@@ -83,17 +83,17 @@ export const AnswerGrid: AnswerGridType = ({
       {grid.map((button, index) => {
         //console.log('coorect', correctAnswer)
         let buttonClass =
-          button.value == answer
-            ? button.value == correctAnswer
+          button.value.toString() === answer
+            ? button.value.toString() === correctAnswer
               ? 'btn bg-green-500 text-button-foreground border-button-border'
               : 'btn bg-red-500 text-button-foreground border-button-border'
-            : button.value == correctAnswer
+            : button.value.toString() === correctAnswer
               ? 'btn bg-green-500 text-button-foreground border-button-border'
               : 'btn bg-button text-button-foreground border-button-border'
         return hasAnswered ? (
           <div key={index}>
             <button key={button.value} className={buttonClass}>
-              {button.value == correctAnswer ? (
+              {button.value.toString() === correctAnswer ? (
                 <div
                   className="animate-fadeInShowAnswer"
                   onAnimationEnd={() => {
@@ -105,7 +105,7 @@ export const AnswerGrid: AnswerGridType = ({
                 </div>
               ) : (
                 <>
-                  {button.value == answer ? (
+                  {button.value.toString() == answer ? (
                     <div className="animate-fadeInShowAnswer">
                       {button.value < 10 ? <>0{button.value}</> : <>{button.value}</>}
                     </div>
@@ -121,7 +121,7 @@ export const AnswerGrid: AnswerGridType = ({
             <button
               key={button.value}
               className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl"
-              onClick={() => onNumberSelect(button.value)}
+              onClick={() => onNumberSelect(button.value.toString())}
             >
               <div className="grid-text-hidden">
                 {button.value < 10 ? <>0{button.value}</> : <>{button.value}</>}

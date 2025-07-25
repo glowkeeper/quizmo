@@ -29,32 +29,26 @@ export const Quizmo = () => {
   const [hasShownOld, setHasShownOld] = useState<boolean>(false)
   const [oldTotal, setOldTotal] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
+  const [game, setGame] = useState<string>('')
 
   const setQuestions = (questions: Questions[]) => {
     //console.log('decoded', questions)
     if (questions.length) {
-      const storedGameEncoded = localStorage.getItem('game') as string
-      if (storedGameEncoded) {
-        //console.log('stored game', storedGameEncoded)
-        const storedGame = Buffer.from(storedGameEncoded, 'base64').toString('ascii')
-        const thisGame = questions[0].game
-        if (storedGame !== thisGame) {
-          localStorage.clear()
-        } else {
-          const totalEncoded = localStorage.getItem('total') as string
-          const total = totalEncoded ? Buffer.from(totalEncoded, 'base64').toString('ascii') : 0
-          const answersEncoded = localStorage.getItem('answers') as string
-          const answers = answersEncoded
-            ? Buffer.from(answersEncoded, 'base64').toString('ascii')
-            : ''
-          answers !== '' ? setAllAnswers(JSON.parse(answers)) : []
-          setTotal(Number(total))
-          setHasFinished(true)
-        }
+      const game = questions[0].game
+      const storedGame = localStorage.getItem(game)
+      if (storedGame) {
+        const answersEncoded: string = Buffer.from(storedGame, 'base64').toString('ascii')
+        const theseAnswers = JSON.parse(answersEncoded)
+        const total = theseAnswers.total
+        const answers: Answers[] = theseAnswers.answers
+        setAllAnswers(answers)
+        setTotal(Number(total))
+        setHasFinished(true)
+      } else {
+        localStorage.setItem(game, Buffer.from(questions[0].game).toString('base64'))
       }
-      localStorage.setItem('game', Buffer.from(questions[0].game).toString('base64'))
+      setGame(game)
     }
-
     //console.log('questions', questions)
     setAllQuestions(questions)
   }
@@ -71,12 +65,12 @@ export const Quizmo = () => {
           //console.log('fetched', json)
           if (json?.message?.length) {
             questions = json?.message.map((question: Questions) => {
-              const newQuestion = {
+              const encodedQuestion = {
                 question: Buffer.from(question.question, 'base64').toString('ascii'),
                 answer: Buffer.from(question.answer, 'base64').toString('ascii'),
-                game: Buffer.from(question.game, 'base64').toString('ascii'),
+                game: question.game,
               }
-              return newQuestion
+              return encodedQuestion
             })
           }
         })
@@ -137,6 +131,10 @@ export const Quizmo = () => {
                       <p
                         className="font-bold animate-fadeInVeryFast"
                         onAnimationEnd={() => {
+                          const answers = {
+                            total: total,
+                            answers: allAnswers,
+                          }
                           setOldTotal(total)
                           setHasNewScore(false)
                           if (questionNumber >= maxAnswer) {
@@ -147,12 +145,8 @@ export const Quizmo = () => {
                             setQuestionNumber(questionNumber + 1)
                           }
                           localStorage.setItem(
-                            'answers',
-                            Buffer.from(JSON.stringify(allAnswers)).toString('base64'),
-                          )
-                          localStorage.setItem(
-                            'total',
-                            Buffer.from(JSON.stringify(total)).toString('base64'),
+                            game,
+                            Buffer.from(JSON.stringify(answers)).toString('base64'),
                           )
                         }}
                       >

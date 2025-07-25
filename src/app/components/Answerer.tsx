@@ -12,8 +12,8 @@ import { Countdowner } from './Countdowner'
 export interface Answers {
   questionNumber: number
   question: string
-  correctAnswer: number
-  answer: number
+  correctAnswer: string
+  answer: string
   time: number
 }
 
@@ -30,8 +30,8 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
   const [currentAnswer, setCurrentAnswer] = useState<Answers>({
     questionNumber: 1,
     question: '',
-    correctAnswer: 0,
-    answer: 0,
+    correctAnswer: '',
+    answer: '',
     time: 0,
   })
 
@@ -50,7 +50,7 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
         questionNumber: questionNumber,
         question: questions[questionNumber - 1].question,
         correctAnswer: questions[questionNumber - 1].answer,
-        answer: 0,
+        answer: '',
         time: 0,
       }
       setCurrentAnswer(newAnswer)
@@ -81,7 +81,7 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
     }
   }
 
-  const onSetAnswer = (answer: number, question: number) => {
+  const onSetAnswer = (answer: string, question: number) => {
     //console.log(`answer for ${question} is ${answer}`, currentAnswer.questionNumber)
 
     if (currentAnswer.questionNumber === question) {
