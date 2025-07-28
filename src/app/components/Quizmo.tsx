@@ -10,7 +10,13 @@ import { maxAnswer, maxTime } from '../../config'
 
 import { Answerer } from './Answerer'
 import { Questioner } from './Questioner'
-import { Summary } from './Summary'
+import { History } from './History'
+
+export type GameStorage = {
+  date: string
+  total: number
+  answers: Array<Answers>
+}
 
 export const Quizmo = () => {
   const [isFetching, setIsFetching] = useState<boolean>(true)
@@ -33,19 +39,19 @@ export const Quizmo = () => {
   const [gameDate, setGameDate] = useState<string>('')
 
   const setQuestions = (game: string, gameDate: string, questions: Questions[]) => {
-    //console.log('decoded', questions)
+    //console.log('decoded', game, gameDate, questions)
     if (questions.length) {
       const storedGame = localStorage.getItem(game)
       if (storedGame) {
         const answersEncoded: string = Buffer.from(storedGame, 'base64').toString('ascii')
-        const theseAnswers = JSON.parse(answersEncoded)
+        const theseAnswers: GameStorage = JSON.parse(answersEncoded)
         const total = theseAnswers.total
         const answers: Answers[] = theseAnswers.answers
         setAllAnswers(answers)
         setTotal(Number(total))
         setHasFinished(true)
       } else {
-        localStorage.setItem(game, Buffer.from(questions[0].game).toString('base64'))
+        localStorage.setItem(game, '')
       }
     }
     //console.log('questions', questions)
@@ -66,7 +72,7 @@ export const Quizmo = () => {
             throw new Error('Network response was not ok')
           }
           const json = await response.json()
-          console.log('fetched', json)
+          //console.log('fetched', json)
           if (json?.message) {
             game = json.message.game
             gameDate = json.message.date
@@ -136,7 +142,7 @@ export const Quizmo = () => {
                       <p
                         className="font-bold animate-fadeInVeryFast"
                         onAnimationEnd={() => {
-                          const answers = {
+                          const answers: GameStorage = {
                             date: gameDate,
                             total: total,
                             answers: allAnswers,
@@ -204,7 +210,7 @@ export const Quizmo = () => {
         <>
           {hasFinished ? (
             <>
-              <Summary total={total} answers={allAnswers} />
+              <History game={game} />
             </>
           ) : (
             <>

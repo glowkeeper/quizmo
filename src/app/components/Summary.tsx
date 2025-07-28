@@ -3,10 +3,10 @@
 import React, { useState, useEffect, type ReactNode } from 'react'
 
 import type { Answers } from './Answerer'
+
 import { maxAnswer, maxTime } from '../../config'
 
 type SummaryType = ({ total, answers }: SummaryProps) => ReactNode
-
 interface SummaryProps {
   total: number
   answers: Answers[]
@@ -61,14 +61,12 @@ export const Summary: SummaryType = ({ total, answers }) => {
           <p>{allAnswers[questionNumber - 1].question}</p>
           <p>
             Your Answer:{' '}
-            {allAnswers[questionNumber - 1].answer == 0
-              ? '---'
-              : allAnswers[questionNumber - 1].answer}
+            {allAnswers[questionNumber - 1].answer ? allAnswers[questionNumber - 1].answer : '---'}
           </p>
           <p>Correct Answer: {allAnswers[questionNumber - 1].correctAnswer}</p>
           <p>
             Score:{' '}
-            {allAnswers[questionNumber - 1].answer ==
+            {allAnswers[questionNumber - 1].answer ===
             allAnswers[questionNumber - 1].correctAnswer ? (
               <>{(maxTime - allAnswers[questionNumber - 1].time).toFixed(2)}</>
             ) : (
@@ -144,15 +142,6 @@ export const Summary: SummaryType = ({ total, answers }) => {
       ) : (
         <>
           <p>
-            <b>
-              {new Date().toLocaleDateString('en-UK', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric',
-              })}
-            </b>
-          </p>
-          <p>
             Correct: {numCorrect} / {maxAnswer}
           </p>
           <p>Unanswered: {numUnanswered}</p>
@@ -161,16 +150,8 @@ export const Summary: SummaryType = ({ total, answers }) => {
             {isNaN(avgCorrectTime) ? '---' : avgCorrectTime.toFixed(2) + 's'}
           </p>
           <p>
-            Average Correct Score:{' '}
-            {isNaN(avgCorrectTime) ? '---' : (totalScore / numCorrect).toFixed(2)}
-          </p>
-          <p>
             Average Answer Time:{' '}
             {isNaN(avgCorrectTime) || avgTime === maxTime ? '---' : avgTime.toFixed(2) + 's'}
-          </p>
-          <p>
-            Average Score:{' '}
-            {isNaN(avgCorrectTime) || avgTime === 10 ? '---' : (totalScore / maxAnswer).toFixed(2)}
           </p>
           <button
             className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
