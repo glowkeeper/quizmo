@@ -73,71 +73,47 @@ export const Summary: SummaryType = ({ total, answers }) => {
               <>0</>
             )}
           </p>
-          {questionNumber >= numAnswers ? (
-            <div className="flex flex-row items-center justify-center gap-4">
+          <div className="flex flex-row items-center justify-center gap-4">
+            {questionNumber > 1 ? (
               <button
                 className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
                 onClick={() => setQuestionNumber(questionNumber - 1)}
               >
                 Prev
               </button>
+            ) : (
+              <button
+                className="btn btn-disabled bg-button text-button-foreground border-button-border active:shadow-xl my-4"
+                tabIndex={-1}
+              >
+                Prev
+              </button>
+            )}
+            <button
+              className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
+              onClick={() => {
+                setShowAnswers(false)
+                setQuestionNumber(1)
+              }}
+            >
+              Summary
+            </button>
+            {questionNumber < numAnswers ? (
               <button
                 className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
-                onClick={() => {
-                  setShowAnswers(false)
-                  setQuestionNumber(1)
-                }}
+                onClick={() => setQuestionNumber(questionNumber + 1)}
               >
-                Summary
+                Next
               </button>
-            </div>
-          ) : (
-            <>
-              {questionNumber <= 1 ? (
-                <div className="flex flex-row items-center justify-center gap-4">
-                  <button
-                    className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
-                    onClick={() => setQuestionNumber(questionNumber + 1)}
-                  >
-                    Next
-                  </button>
-                  <button
-                    className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
-                    onClick={() => {
-                      setShowAnswers(false)
-                      setQuestionNumber(1)
-                    }}
-                  >
-                    Summary
-                  </button>
-                </div>
-              ) : (
-                <div className="flex flex-row items-center justify-center gap-4">
-                  <button
-                    className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
-                    onClick={() => setQuestionNumber(questionNumber + 1)}
-                  >
-                    Next
-                  </button>
-                  <button
-                    className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
-                    onClick={() => setQuestionNumber(questionNumber - 1)}
-                  >
-                    Prev
-                  </button>
-                  <button
-                    className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
-                    onClick={() => {
-                      setShowAnswers(false)
-                      setQuestionNumber(1)
-                    }}
-                  >
-                    Summary
-                  </button>
-                </div>
-              )}
-            </>
-          )}
+            ) : (
+              <button
+                className="btn btn-disabled bg-button text-button-foreground border-button-border active:shadow-xl my-4"
+                tabIndex={-1}
+              >
+                Next
+              </button>
+            )}
+          </div>
         </>
       ) : (
         <>

@@ -114,6 +114,9 @@ html[data-theme='light'] {
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
 
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
   --color-button: var(--accent);
   --color-button-border: var(--border);
   --color-button-hover: var(--input);
