@@ -40,7 +40,7 @@ export const History: HistoryType = ({ game }) => {
       games.push(gameData)
 
       if (game === thisGame) {
-        console.log('this game', gameData, game, thisGame, gameData.date, gameData.total)
+        //console.log('this game', gameData, game, thisGame, gameData.date, gameData.total)
         setShownIndex(i)
       }
     }
@@ -53,11 +53,11 @@ export const History: HistoryType = ({ game }) => {
         <>
           <div className="grid grid-cols-5 place-items-center gap-4">
             <>
-              <h3>Total Games</h3>
-              <h3>Total Score</h3>
-              <h3>Average Score</h3>
-              <h3>Highest Score</h3>
-              <h3>Lowest Score</h3>
+              <h3>Games</h3>
+              <h3>Total</h3>
+              <h3>Average</h3>
+              <h3>Highest</h3>
+              <h3>Lowest</h3>
             </>
             <>
               <p>{games.length}</p>
@@ -85,7 +85,7 @@ export const History: HistoryType = ({ game }) => {
             </>
           </div>
 
-          <hr className="w-48 h-1 my-4 bg-[var(--secondary)] border-0 rounded-sm"></hr>
+          <hr className="w-1/4 h-1 my-4 bg-[var(--secondary)] border-0 rounded-sm"></hr>
 
           <div className="grid grid-cols-3 place-items-center gap-4">
             {shownIndex - 1 >= 0 ? (
@@ -129,7 +129,7 @@ export const History: HistoryType = ({ game }) => {
             )}
           </div>
 
-          <hr className="w-48 h-1 my-4 bg-[var(--secondary)] border-0 rounded-sm"></hr>
+          <hr className="w-1/4 h-1 my-4 bg-[var(--secondary)] border-0 rounded-sm"></hr>
 
           <Summary total={games[shownIndex].total} answers={games[shownIndex].answers} />
         </>

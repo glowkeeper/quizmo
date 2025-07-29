@@ -54,10 +54,10 @@ export const Summary: SummaryType = ({ total, answers }) => {
 
   return (
     <>
-      <p className="font-bold">{`Total: ${totalScore.toFixed(2)}`}</p>
+      <h2>{`Total: ${totalScore.toFixed(2)}`}</h2>
       {showAnswers ? (
         <>
-          <h2>Question {questionNumber}</h2>
+          <h3>Question {questionNumber}</h3>
           <p>{allAnswers[questionNumber - 1].question}</p>
           <p>
             Your Answer:{' '}
