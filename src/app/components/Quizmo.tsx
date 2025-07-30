@@ -61,37 +61,45 @@ export const Quizmo = () => {
     setAllQuestions(questions)
   }
 
+  const getQuestions = async () => {
+    let questions: Questions[] = []
+    let game = ''
+    let gameDate = ''
+    await fetch('http://localhost:3000/api/questions/live')
+      .then(async (response: Response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const json = await response.json()
+        //console.log('fetched', json)
+        if (json?.message) {
+          game = json.message.game
+          gameDate = json.message.date
+          questions = json.message.questions.map((question: Questions) => {
+            const encodedQuestion = {
+              question: Buffer.from(question.question, 'base64').toString('ascii'),
+              answer: Buffer.from(question.answer, 'base64').toString('ascii'),
+            }
+            return encodedQuestion
+          })
+        }
+      })
+      .catch((error) => console.error('Error fetching data:', error))
+
+    setQuestions(game, gameDate, questions)
+    setIsFetching(false)
+  }
+
   useEffect(() => {
-    const getQuestions = async () => {
-      let questions: Questions[] = []
-      let game = ''
-      let gameDate = ''
-      await fetch('http://localhost:3000/api/questions/live')
-        .then(async (response: Response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok')
-          }
-          const json = await response.json()
-          //console.log('fetched', json)
-          if (json?.message) {
-            game = json.message.game
-            gameDate = json.message.date
-            questions = json.message.questions.map((question: Questions) => {
-              const encodedQuestion = {
-                question: Buffer.from(question.question, 'base64').toString('ascii'),
-                answer: Buffer.from(question.answer, 'base64').toString('ascii'),
-              }
-              return encodedQuestion
-            })
-          }
-        })
-        .catch((error) => console.error('Error fetching data:', error))
-
-      setQuestions(game, gameDate, questions)
-      setIsFetching(false)
-    }
-
     getQuestions()
+    const timer = setInterval(() => {
+      if (!isPlaying) {
+        console.log('trying to get questions')
+        getQuestions()
+      }
+    }, 60000) // try and get a new set once a minute
+
+    return () => clearInterval(timer)
   }, [])
 
   const handlePlay = () => {
