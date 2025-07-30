@@ -2,17 +2,22 @@
 
 import React, { useState, useEffect, type ReactNode } from 'react'
 
+import Image, { StaticImageData } from 'next/image'
+
 import type { Answers } from './Answerer'
 
 import { maxAnswer, maxTime } from '../../config'
 
-type SummaryType = ({ total, answers }: SummaryProps) => ReactNode
+import share from '../../assets/images/share.png'
+
+type SummaryType = ({ date, total, answers }: SummaryProps) => ReactNode
 interface SummaryProps {
+  date: string
   total: number
   answers: Answers[]
 }
 
-export const Summary: SummaryType = ({ total, answers }) => {
+export const Summary: SummaryType = ({ date, total, answers }) => {
   const [totalScore, setTotalScore] = useState<number>(0)
   const [numAnswers, setNumAnswers] = useState<number>(0)
   const [allAnswers, setAllAnswers] = useState<Answers[]>([])
@@ -23,6 +28,7 @@ export const Summary: SummaryType = ({ total, answers }) => {
 
   const [showAnswers, setShowAnswers] = useState<boolean>(false)
   const [questionNumber, setQuestionNumber] = useState<number>(1)
+  const [copyText, setCopyText] = useState<string>('')
 
   useEffect(() => {
     let numAnswers = answers.length
@@ -51,6 +57,39 @@ export const Summary: SummaryType = ({ total, answers }) => {
     setAvgTime(totalTime / (maxAnswer - unAnswered))
     setAvgCorrectTime(correctTime / numCorrect)
   }, [total, answers])
+
+  const onSetCopyText = () => {
+    const url = 'https://www.quizmo.fun'
+    const total = `Total: ${totalScore.toFixed(2)}`
+    const thisDate = new Date(date).toLocaleDateString('en-UK', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    })
+    const correct = `Correct: ${numCorrect} / ${maxAnswer}`
+    const unAnswered = `Unanswered: ${numUnanswered}`
+    const avgCorrect =
+      'Average Correct Answer Time: ' +
+      `${isNaN(avgCorrectTime) ? '---' : avgCorrectTime.toFixed(2) + 's'}`
+    const avgAnswer =
+      'Average Answer Time: ' +
+      `${isNaN(avgCorrectTime) || avgTime === maxTime ? '---' : avgTime.toFixed(2) + 's'}`
+    const copyText =
+      url +
+      '\n\n' +
+      thisDate +
+      '\n\n' +
+      total +
+      '\n' +
+      correct +
+      '\n' +
+      unAnswered +
+      '\n' +
+      avgCorrect +
+      '\n' +
+      avgAnswer
+    setCopyText(copyText)
+  }
 
   return (
     <>
@@ -129,12 +168,61 @@ export const Summary: SummaryType = ({ total, answers }) => {
             Average Answer Time:{' '}
             {isNaN(avgCorrectTime) || avgTime === maxTime ? '---' : avgTime.toFixed(2) + 's'}
           </p>
-          <button
-            className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
-            onClick={() => setShowAnswers(true)}
-          >
-            Show Answers
-          </button>
+          <div className="grid grid-cols-2 place-items-center gap-4">
+            <button
+              className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
+              onClick={() => setShowAnswers(true)}
+            >
+              Show Answers
+            </button>
+            <button
+              className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl"
+              onClick={() => {
+                onSetCopyText()
+                ;(document.getElementById('copy_modal') as HTMLDialogElement).showModal()
+              }}
+            >
+              <Image className="share" src={share as StaticImageData} alt="Quizmo Logo" />
+            </button>
+            <dialog id="copy_modal" className="modal">
+              <div className="modal-box">
+                <p className="font-bold">
+                  {new Date(date).toLocaleDateString('en-UK', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </p>
+                <h2>{`Total: ${totalScore.toFixed(2)}`}</h2>
+                <p>
+                  Correct: {numCorrect} / {maxAnswer}
+                </p>
+                <p>Unanswered: {numUnanswered}</p>
+                <p>
+                  Average Correct Answer Time:{' '}
+                  {isNaN(avgCorrectTime) ? '---' : avgCorrectTime.toFixed(2) + 's'}
+                </p>
+                <p>
+                  Average Answer Time:{' '}
+                  {isNaN(avgCorrectTime) || avgTime === maxTime ? '---' : avgTime.toFixed(2) + 's'}
+                </p>
+                <div className="grid grid-cols-2 place-items-center gap-4">
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      navigator.clipboard.writeText(copyText)
+                    }}
+                  >
+                    <p>⎗</p>
+                  </button>
+                  <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button className="btn">Close</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
+          </div>
         </>
       )}
     </>

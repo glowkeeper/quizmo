@@ -131,7 +131,11 @@ export const History: HistoryType = ({ game }) => {
 
           <hr className="w-1/4 h-1 my-4 bg-[var(--secondary)] border-0 rounded-sm"></hr>
 
-          <Summary total={games[shownIndex].total} answers={games[shownIndex].answers} />
+          <Summary
+            date={games[shownIndex].date}
+            total={games[shownIndex].total}
+            answers={games[shownIndex].answers}
+          />
         </>
       )}
     </>

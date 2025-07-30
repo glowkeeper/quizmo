@@ -17,3 +17,8 @@ body {
   @apply flex flex-col items-center justify-center;  
   height: calc(100vh - (var(--header-height) + var(--footer-height)));
 }
+
+.share {
+  height: 1.5rem;
+  width: 1.5rem;
+}
