@@ -182,7 +182,7 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
                 ;(document.getElementById('copy_modal') as HTMLDialogElement).showModal()
               }}
             >
-              <Image className="share" src={share as StaticImageData} alt="Quizmo Logo" />
+              Share <Image className="share" src={share as StaticImageData} alt="Share" />
             </button>
             <dialog id="copy_modal" className="modal">
               <div className="modal-box">
@@ -207,17 +207,21 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
                   {isNaN(avgCorrectTime) || avgTime === maxTime ? '---' : avgTime.toFixed(2) + 's'}
                 </p>
                 <div className="grid grid-cols-2 place-items-center gap-4">
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      navigator.clipboard.writeText(copyText)
-                    }}
-                  >
-                    <p>⎗</p>
-                  </button>
+                  <form method="dialog">
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        navigator.clipboard.writeText(copyText)
+                      }}
+                    >
+                      <p>Copy ⎗</p>
+                    </button>
+                  </form>
                   <form method="dialog">
                     {/* if there is a button in form, it will close the modal */}
-                    <button className="btn">Close</button>
+                    <button className="btn">
+                      <p>Close</p>
+                    </button>
                   </form>
                 </div>
               </div>

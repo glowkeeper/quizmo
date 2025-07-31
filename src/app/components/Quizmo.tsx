@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, type ReactNode } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import type { Questions } from '../../scripts/setQuestions'
 
@@ -23,6 +23,9 @@ export const Quizmo = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [hasAsked, setHasAsked] = useState<boolean>(false)
   const [hasFinished, setHasFinished] = useState<boolean>(false)
+
+  const [doFetch, setDoFetch] = useState<boolean>(true)
+  const [timer, setTimer] = useState<NodeJS.Timeout>()
 
   const [allQuestions, setAllQuestions] = useState<Questions[]>([])
   const [questionNumber, setQuestionNumber] = useState<number>(1)
@@ -91,19 +94,24 @@ export const Quizmo = () => {
   }
 
   useEffect(() => {
-    getQuestions()
-    const timer = setInterval(() => {
-      if (!isPlaying) {
-        console.log('trying to get questions')
+    if (doFetch) {
+      getQuestions()
+      const timer = setInterval(() => {
+        //console.log('getting questions')
         getQuestions()
-      }
-    }, 60000) // try and get a new set once a minute
+      }, 60000) //once a minute
+      setTimer(timer)
+    } else {
+      //console.log('timer', timer)
+      clearInterval(timer)
+    }
 
-    return () => clearInterval(timer)
-  }, [])
+    return () => window.clearInterval(timer)
+  }, [doFetch])
 
   const handlePlay = () => {
     setIsPlaying(true)
+    setDoFetch(false)
   }
 
   const onHasAsked = (question: number) => {
@@ -137,6 +145,25 @@ export const Quizmo = () => {
     }
   }
 
+  const onHasShownOld = () => {
+    const answers: GameStorage = {
+      date: gameDate,
+      total: total,
+      answers: allAnswers,
+    }
+    setOldTotal(total)
+    setHasNewScore(false)
+    if (questionNumber >= maxAnswer) {
+      setIsPlaying(false)
+      setHasFinished(true)
+      setDoFetch(true)
+    } else {
+      setHasAsked(false)
+      setQuestionNumber(questionNumber + 1)
+    }
+    localStorage.setItem(game, Buffer.from(JSON.stringify(answers)).toString('base64'))
+  }
+
   return (
     <div className="quizmo">
       {isPlaying ? (
@@ -149,26 +176,7 @@ export const Quizmo = () => {
                     <>
                       <p
                         className="font-bold animate-fadeInVeryFast"
-                        onAnimationEnd={() => {
-                          const answers: GameStorage = {
-                            date: gameDate,
-                            total: total,
-                            answers: allAnswers,
-                          }
-                          setOldTotal(total)
-                          setHasNewScore(false)
-                          if (questionNumber >= maxAnswer) {
-                            setIsPlaying(false)
-                            setHasFinished(true)
-                          } else {
-                            setHasAsked(false)
-                            setQuestionNumber(questionNumber + 1)
-                          }
-                          localStorage.setItem(
-                            game,
-                            Buffer.from(JSON.stringify(answers)).toString('base64'),
-                          )
-                        }}
+                        onAnimationEnd={onHasShownOld}
                       >
                         {`Total: ${total.toFixed(2)}`}
                       </p>

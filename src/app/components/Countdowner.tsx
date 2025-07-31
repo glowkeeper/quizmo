@@ -82,14 +82,14 @@ export const Countdowner: TimerType = ({
       const timer = setInterval(() => {
         setTime((time) => {
           if (time.toFixed(2) === '0.00') {
-            //console.log('this timer', timer)
+            //console.log('this timer', timer, time)
             clearInterval(timer)
             return 0
           } else return time - intervalTime / 1000
         })
       }, intervalTime)
 
-      //console.log('timer', timer)
+      // console.log('timer', timer)
       setTimer(timer)
     }
 
