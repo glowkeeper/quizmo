@@ -59,7 +59,10 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
   }, [total, answers])
 
   const onSetCopyText = () => {
+    const title = 'Quizmo'
     const url = 'https://www.quizmo.fun'
+    const desc =
+      'Quizmo is a rapid-fire 25-question quiz. The answers are anything from 1 to 25. You have just 10 seconds to decide on each answer, and the quicker you are, the higher you can score.'
     const total = `Total: ${totalScore.toFixed(2)}`
     const thisDate = new Date(date).toLocaleDateString('en-UK', {
       month: 'long',
@@ -75,7 +78,11 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
       'Average Answer Time: ' +
       `${isNaN(avgCorrectTime) || avgTime === maxTime ? '---' : avgTime.toFixed(2) + 's'}`
     const copyText =
+      title +
+      '\n' +
       url +
+      '\n\n' +
+      desc +
       '\n\n' +
       thisDate +
       '\n\n' +

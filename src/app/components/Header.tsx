@@ -20,7 +20,10 @@ export const Header = () => {
         <dialog id="my_modal_1" className="modal">
           <div className="modal-box">
             <h2>Quizmo</h2>
-            <p>Quizmo is rapid-fire 25 questions. The answers are anything from 1 to 25.</p>
+            <p>
+              Quizmo is a rapid-fire 25-question quiz with a new set of questions daily. The answers
+              are anything from 1 to 25.
+            </p>
             <p>
               You input your answer by selecting a button on a 5x5 grid, which runs from left to
               right and top to bottom. The top left button represents 1. The bottom right button
@@ -30,9 +33,7 @@ export const Header = () => {
               You have just 10 seconds to decide on each answer, and the quicker you are, the higher
               you can score.
             </p>
-            <p>
-              <b>Think fast and react quickly!</b>
-            </p>
+            <p></p>
             <div className="modal-action">
               <form method="dialog">
                 {/* if there is a button in form, it will close the modal */}
