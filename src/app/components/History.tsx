@@ -5,7 +5,6 @@ import React, { useState, useEffect, type ReactNode } from 'react'
 import { Summary } from './Summary'
 
 import type { GameStorage } from './Quizmo'
-import type { Answers } from './Answerer'
 
 import { maxAnswer, maxTime } from '../../config'
 
@@ -23,7 +22,6 @@ export const History: HistoryType = ({ game }) => {
 
   useEffect(() => {
     const games: GameHistory[] = []
-    const total = 0
     for (let i = 0; i < localStorage.length; i++) {
       // set iteration key name
       const thisGame = localStorage.key(i) as string

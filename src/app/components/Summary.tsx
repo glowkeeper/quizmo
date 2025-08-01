@@ -31,7 +31,7 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
   const [copyText, setCopyText] = useState<string>('')
 
   useEffect(() => {
-    let numAnswers = answers.length
+    const numAnswers = answers.length
     let unAnswered = maxAnswer - numAnswers
     let numCorrect = 0
     let totalTime = 0

@@ -3,14 +3,12 @@
 import { getPayload } from 'payload'
 
 import config from '@payload-config'
-import { eq, and, asc, desc, sql } from '@payloadcms/db-sqlite/drizzle'
+import { eq, asc, sql } from '@payloadcms/db-sqlite/drizzle'
 
 import { questions } from '../payload-generated-schema'
 import { games } from '../payload-generated-schema'
 
 import { maxAnswer } from '../config'
-
-let exitCode = 0
 
 const setLive = async () => {
   const payload = await getPayload({ config })
@@ -54,4 +52,4 @@ const setLive = async () => {
 }
 
 await setLive()
-process.exit(exitCode)
+process.exit(0)

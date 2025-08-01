@@ -30,7 +30,7 @@ const seed = async () => {
 
       if (!prior.length) {
         //new question
-        const inserted = await payload.db.drizzle.insert(questions).values({
+        await payload.db.drizzle.insert(questions).values({
           question: record.question,
           answer: record.answer.toLocaleString(),
           category: 'General Knowledge',

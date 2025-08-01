@@ -22,11 +22,6 @@ interface AnswerGridProps {
   onGetTime: (question: number) => void
 }
 
-interface Grid {
-  size: number
-  css: string
-}
-
 interface GridData {
   value: number
   className: string
@@ -82,7 +77,7 @@ export const AnswerGrid: AnswerGridType = ({
     <div className="grid grid-cols-5 gap-2 m-4">
       {grid.map((button, index) => {
         //console.log('coorect', correctAnswer)
-        let buttonClass =
+        const buttonClass =
           button.value.toString() === answer
             ? button.value.toString() === correctAnswer
               ? 'btn bg-green-500 text-button-foreground border-button-border'
