@@ -35,17 +35,16 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
     time: 0,
   })
 
-  const [question, setQuestion] = useState<number>(1)
+  const [question, setQuestion] = useState<number>(0)
   const [startToggle, setStartToggle] = useState<boolean>(false)
   const [wantsTimeToggle, setWantsTimeToggle] = useState<boolean>(false)
-  const [clearToggle, setClearToggle] = useState<boolean>(true)
 
   const [timeElapsed, setTimeElapsed] = useState<boolean>(false)
 
   useEffect(() => {
-    //console.log('answerer useEffect', questions, questionNumber)
+    //console.log('answerer useEffect', questions, question, questionNumber)
 
-    if (questions.length) {
+    if (questions.length && question !== questionNumber) {
       const newAnswer = {
         questionNumber: questionNumber,
         question: questions[questionNumber - 1].question,
@@ -55,11 +54,9 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
       }
       setCurrentAnswer(newAnswer)
       setQuestion(questionNumber)
+      setStartToggle(!startToggle)
     }
-
-    //setAllQuestions(questions)
-    setStartToggle(!startToggle)
-  }, [questions, questionNumber])
+  }, [question, questions, questionNumber])
 
   const onGetTime = (question: number) => {
     //console.log(`Time for ${question} was ${timeTaken}`)
@@ -99,11 +96,9 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
       <Countdowner
         questionNumber={questionNumber}
         countdownFrom={maxTime}
-        granularity={100}
         onSetTime={onSetTime}
         startTimerToggle={startToggle}
         wantsTimeToggle={wantsTimeToggle}
-        clearToggle={clearToggle}
       />
 
       <AnswerGrid

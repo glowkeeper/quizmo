@@ -50,8 +50,11 @@ export const AnswerGrid: AnswerGridType = ({
   }, [])
 
   useEffect(() => {
-    setCorrectAnswer(questions[questionNumber - 1].answer)
-    setQuestion(questionNumber)
+    //console.log('blah', questions, questionNumber)
+    if (questionNumber) {
+      setCorrectAnswer(questions[questionNumber - 1].answer)
+      setQuestion(questionNumber)
+    }
   }, [questions, questionNumber])
 
   useEffect(() => {
