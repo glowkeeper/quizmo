@@ -69,7 +69,6 @@ export const AnswerGrid: AnswerGridType = ({
     setAnswer(value)
     setHasAnswered(true)
     onGetTime(question)
-    //onSetAnswer(value, question)
   }
 
   const onShownCorrect = () => {

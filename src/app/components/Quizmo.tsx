@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import type { Questions } from '../../scripts/setQuestions'
 
@@ -64,7 +64,7 @@ export const Quizmo = () => {
     setAllQuestions(questions)
   }
 
-  const getQuestions = async () => {
+  const getQuestions = useCallback(async () => {
     let questions: Questions[] = []
     let game = ''
     let gameDate = ''
@@ -91,27 +91,30 @@ export const Quizmo = () => {
 
     setQuestions(game, gameDate, questions)
     setIsFetching(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    return () => clearInterval(timer)
+  }, [timer])
 
   useEffect(() => {
     if (doFetch) {
+      setDoFetch(false)
       getQuestions()
       const timer = setInterval(() => {
-        //console.log('getting questions')
+        console.log('getting questions')
         getQuestions()
       }, 60000) //once a minute
       setTimer(timer)
-    } else {
-      //console.log('timer', timer)
-      clearInterval(timer)
     }
 
-    return () => window.clearInterval(timer)
-  }, [doFetch])
+    return () => clearInterval(timer)
+  }, [doFetch, getQuestions, timer])
 
   const handlePlay = () => {
     setIsPlaying(true)
     setDoFetch(false)
+    clearInterval(timer)
   }
 
   const onHasAsked = (question: number) => {

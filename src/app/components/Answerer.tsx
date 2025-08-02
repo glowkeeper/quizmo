@@ -36,7 +36,6 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
   })
 
   const [question, setQuestion] = useState<number>(0)
-  const [startToggle, setStartToggle] = useState<boolean>(false)
   const [wantsTimeToggle, setWantsTimeToggle] = useState<boolean>(false)
 
   const [timeElapsed, setTimeElapsed] = useState<boolean>(false)
@@ -54,7 +53,6 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
       }
       setCurrentAnswer(newAnswer)
       setQuestion(questionNumber)
-      setStartToggle(!startToggle)
     }
   }, [question, questions, questionNumber])
 
@@ -69,7 +67,7 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
   const onSetTime = (timeTaken: number, question: number) => {
     //console.log(`Time for ${question} was ${timeTaken}`)
 
-    if (currentAnswer.questionNumber === question) {
+    if (currentAnswer.questionNumber === question && currentAnswer.time !== timeTaken) {
       const thisAnswer: Answers = { ...currentAnswer, time: timeTaken }
       setCurrentAnswer(thisAnswer)
       if (timeTaken === maxTime) {
@@ -97,7 +95,6 @@ export const Answerer: AnswererType = ({ questions, questionNumber, onHasAnswere
         questionNumber={questionNumber}
         countdownFrom={maxTime}
         onSetTime={onSetTime}
-        startTimerToggle={startToggle}
         wantsTimeToggle={wantsTimeToggle}
       />
 

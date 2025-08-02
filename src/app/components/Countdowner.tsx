@@ -6,7 +6,6 @@ type TimerType = ({
   questionNumber,
   countdownFrom,
   onSetTime,
-  startTimerToggle,
   wantsTimeToggle,
 }: TimerProps) => ReactNode
 
@@ -14,7 +13,6 @@ interface TimerProps {
   questionNumber: number
   countdownFrom: number
   onSetTime: (amountCountdown: number, question: number) => void
-  startTimerToggle: boolean
   wantsTimeToggle: boolean
 }
 
@@ -22,64 +20,57 @@ export const Countdowner: TimerType = ({
   questionNumber,
   countdownFrom,
   onSetTime,
-  startTimerToggle,
   wantsTimeToggle,
 }) => {
   const [timer, setTimer] = useState<NodeJS.Timeout>()
   const [time, setTime] = useState<number>(0)
   const [question, setQuestion] = useState<number>(0)
-  const [startToggle, setStartToggle] = useState<boolean>(false)
   const [sendTimeToggle, setSendTimeToggle] = useState<boolean>(false)
 
   useEffect(() => {
-    setTime(countdownFrom)
-  }, [countdownFrom])
+    return () => clearInterval(timer)
+  }, [timer])
 
   useEffect(() => {
-    setQuestion(questionNumber)
-  }, [questionNumber])
+    if (question !== questionNumber) {
+      setTime(countdownFrom)
+      setQuestion(questionNumber)
+    }
+  }, [question, questionNumber, countdownFrom])
 
   useEffect(() => {
-    //console.log('wants time', wantsTimeToggle, sendTimeToggle)
-
     if (wantsTimeToggle !== sendTimeToggle) {
-      //console.log('wants time here?', wantsTimeToggle, sendTimeToggle, timer)
       clearInterval(timer)
       const amountCountdown = countdownFrom - time
       onSetTime(amountCountdown, question)
       setSendTimeToggle(wantsTimeToggle)
     }
-  }, [countdownFrom, question, sendTimeToggle, time, timer, wantsTimeToggle])
+  }, [countdownFrom, question, onSetTime, sendTimeToggle, time, timer, wantsTimeToggle])
 
   useEffect(() => {
-    //console.log("wants time", wantsTimeToggle, sendTimeToggle)
-
-    if (time.toFixed(2) === '0.00') {
+    if (time <= 0.1) {
       onSetTime(countdownFrom, question)
     }
   }, [countdownFrom, onSetTime, question, time])
 
   useEffect(() => {
-    //console.log('in here set timer?')
-    if (startTimerToggle !== startToggle) {
-      const intervalTime = countdownFrom * 10
+    // console.log('in here set timer?', time, countdownFrom)
+    if (time === countdownFrom) {
       const timer = setInterval(() => {
         setTime((time) => {
-          if (time.toFixed(2) === '0.00') {
-            //console.log('this timer', timer, time)
+          if (time <= 0.1) {
+            //onSetTime(countdownFrom, question)
             clearInterval(timer)
             return 0
-          } else return time - time / intervalTime
+          } else return time - 1 / countdownFrom
         })
-      }, intervalTime)
+      }, 100)
 
+      setTime(time - 1 / 1000)
       // console.log('timer', timer)
       setTimer(timer)
-      setStartToggle(startTimerToggle)
     }
-
-    return () => clearInterval(timer)
-  }, [countdownFrom, startTimerToggle, startToggle, timer])
+  }, [countdownFrom, time, timer])
 
   return (
     <>
