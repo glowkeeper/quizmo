@@ -32,19 +32,18 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
 
   useEffect(() => {
     //console.log('summary answers', answers)
-    const numAnswers = answers.length
-    let unAnswered = maxAnswer - numAnswers
+    let unAnswered = 0
     let numCorrect = 0
     let totalTime = 0
     let correctTime = 0
     answers.forEach((answer) => {
       //console.log('answer', answer)
-      if (answer.answer == answer.correctAnswer) {
+      if (answer.answer === answer.correctAnswer) {
         numCorrect += 1
         correctTime += answer.time
       }
 
-      if (answer.time == maxTime) {
+      if (answer.time === 0) {
         unAnswered += 1
       } else {
         totalTime += answer.time
