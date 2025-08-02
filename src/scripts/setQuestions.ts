@@ -50,7 +50,7 @@ export const parseQuestions: ParseQuestions = (unParsed) => {
 }
 
 const parseGeneratedQuestions: ParseGeneratedQuestions = (questions) => {
-  console.log('Got Questions', questions)
+  //console.log('Got Questions', questions)
   const theseQuestions = questions[0].message?.content
   const parsedQuestions = parseQuestions(theseQuestions)
   //console.log('Parsed Questions', parsedQuestions)
@@ -83,7 +83,7 @@ export const generateQuestions: GenerateQuestions = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-chat-v3-0324:free',
+        model: process.env.OPENROUTER_MODEL,
         messages: [
           {
             role: 'user',
@@ -94,7 +94,7 @@ export const generateQuestions: GenerateQuestions = async () => {
     }
 
     const fetchParams = {
-      url: 'https://openrouter.ai/api/v1/chat/completions',
+      url: process.env.OPENROUTER_URL as string,
       fetchOptions: fetchOptions,
     }
 

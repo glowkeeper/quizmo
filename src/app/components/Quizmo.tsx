@@ -68,7 +68,7 @@ export const Quizmo = () => {
     let questions: Questions[] = []
     let game = ''
     let gameDate = ''
-    await fetch('http://localhost:3000/api/questions/live')
+    await fetch(process.env.NEXT_PUBLIC_QUIZMO_URL as string)
       .then(async (response: Response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
@@ -102,7 +102,7 @@ export const Quizmo = () => {
       setDoFetch(false)
       getQuestions()
       const timer = setInterval(() => {
-        console.log('getting questions')
+        //console.log('getting questions')
         getQuestions()
       }, 60000) //once a minute
       setTimer(timer)
