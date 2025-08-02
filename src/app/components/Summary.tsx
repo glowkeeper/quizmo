@@ -60,8 +60,8 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
   }, [total, answers])
 
   const onSetCopyText = () => {
-    const title = 'Quizmo'
-    const url = 'https://www.quizmo.fun'
+    const title = process.env.NEXT_PUBLIC_TITLE
+    const url = process.env.NEXT_PUBLIC_HOMEPAGE
     const desc =
       'Quizmo is a rapid-fire 25-question quiz. The answers are anything from 1 to 25. You have just 10 seconds to decide on each answer, and the quicker you are, the higher you can score.'
     const total = `Total: ${totalScore.toFixed(2)}`

@@ -79,7 +79,7 @@ export const Quizmo = () => {
     let questions: Questions[] = []
     let game = ''
     let gameDate = ''
-    await fetch(process.env.NEXT_PUBLIC_QUIZMO_URL as string)
+    await fetch(process.env.NEXT_PUBLIC_DBASE_URL as string)
       .then(async (response: Response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
