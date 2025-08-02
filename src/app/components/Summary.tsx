@@ -31,6 +31,7 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
   const [copyText, setCopyText] = useState<string>('')
 
   useEffect(() => {
+    //console.log('summary answers', answers)
     const numAnswers = answers.length
     let unAnswered = maxAnswer - numAnswers
     let numCorrect = 0
@@ -144,7 +145,7 @@ export const Summary: SummaryType = ({ date, total, answers }) => {
             >
               Summary
             </button>
-            {questionNumber < numAnswers ? (
+            {questionNumber < maxAnswer ? (
               <button
                 className="btn bg-button text-button-foreground border-button-border cursor-pointer hover:bg-button-hover active:shadow-xl my-4"
                 onClick={() => setQuestionNumber(questionNumber + 1)}

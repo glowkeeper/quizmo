@@ -43,22 +43,33 @@ export const Quizmo = () => {
 
   const setQuestions = (game: string, gameDate: string, questions: Questions[]) => {
     //console.log('decoded', game, gameDate, questions)
+    let answers: Answers[] = []
     if (questions.length) {
       const storedGame = localStorage.getItem(game)
       if (storedGame) {
         const answersEncoded: string = Buffer.from(storedGame, 'base64').toString('ascii')
         const theseAnswers: GameStorage = JSON.parse(answersEncoded)
         const total = theseAnswers.total
-        const answers: Answers[] = theseAnswers.answers
-        setAllAnswers(answers)
+        answers = [...theseAnswers.answers]
         setTotal(Number(total))
         setHasFinished(true)
       } else {
-        localStorage.setItem(game, '')
+        answers = questions.map((question, index) => {
+          const unAnswered: Answers = {
+            questionNumber: index + 1,
+            question: question.question,
+            correctAnswer: question.answer,
+            answer: '',
+            time: 0,
+          }
+          return unAnswered
+        })
+        localStorage.setItem(game, Buffer.from(JSON.stringify(answers)).toString('base64'))
       }
     }
     //console.log('questions', questions)
 
+    setAllAnswers(answers)
     setGame(game)
     setGameDate(gameDate)
     setAllQuestions(questions)
@@ -131,7 +142,7 @@ export const Quizmo = () => {
     if (answer.questionNumber === questionNumber) {
       //console.log('answers hoorah', currentAnswer)
       const answers = [...allAnswers]
-      answers.push(answer)
+      answers[questionNumber - 1] = answer
       setAllAnswers(answers)
 
       let newScore = 0
